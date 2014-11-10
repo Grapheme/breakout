@@ -221,7 +221,7 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
-  restoreSpeed: function()      { this.ball.speed = 300; $('btn_speed').hide(); },
+  restoreSpeed: function()      { this.ball.speed = 350; $('btn_speed').hide(); },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
     ctx.fillStyle    = this.color.foreground;
