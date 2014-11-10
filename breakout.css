@@ -54,8 +54,8 @@ body {
   text-align: center;
        width: 18em;
       margin: 0 auto;
-    position: relative;
-         top: -16em;
+    position: absolute;
+         top: 5em;
 }
 #instructions b { color: black; }
 
@@ -108,6 +108,6 @@ body {
 }
 
 
-#controls, #levels { opacity: 0; }
+#controls, #levels, .keyboard_ { opacity: 0; }
 
 

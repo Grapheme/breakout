@@ -197,6 +197,8 @@ Breakout = {
   setLevel: function(level) {
     level = (typeof level == 'undefined') ? (this.storage.level ? parseInt(this.storage.level) : 0) : level;
     level = level < Breakout.Levels.length ? level : 0;
+    // hack for iPad
+    level = 5;
     this.court.reset(level);
     this.storage.level = this.level = level;
     this.refreshDOM();
@@ -307,12 +309,14 @@ Breakout = {
 
       paddle = {
         game: this.game,
-        w:    this.game.court.chunk * 1.5,
-        h:    this.game.court.chunk * 2/3
+        w:    this.game.court.chunk,
+        h:    this.game.court.chunk,
+        r:    10,
+        color: '#d99540',
       }
       ctx.translate(this.scorewidth + 20, (this.height-paddle.h) / 2);
       for(var n = 0 ; n < this.lives ; n++) {
-        //this.game.paddle.render.call(paddle, ctx);
+        this.game.paddle.render.call(paddle, ctx);
         ctx.translate(paddle.w + 5, 0);
       }
 
@@ -636,7 +640,8 @@ Breakout = {
     reset: function() {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
       this.w      = this.cfg.width  * this.game.court.chunk;
-      this.h      = 10, //this.cfg.height * this.game.court.chunk;
+      this.h      = 10; //this.cfg.height * this.game.court.chunk;
+      this.r      = 2;
       this.minX   = this.game.court.left;
       this.maxX   = this.game.court.right - this.w;
       this.setpos(Game.random(this.minX, this.maxX), this.game.court.bottom - this.h);
@@ -680,23 +685,34 @@ Breakout = {
       gradient.addColorStop(0.68, 'rgb(235,235,235)');
       gradient.addColorStop(0.84, 'rgb(220,220,220)');
 
-      var r = this.h/4;
+      var r = this.r;
 
-      ctx.fillStyle = gradient;
-      ctx.strokeStyle = this.game.color.border;
-      ctx.beginPath();
-      ctx.moveTo(r,  0);
-      ctx.lineTo(this.w - r, 0);
-      ctx.arcTo(this.w, 0, this.w, r, r);
-      ctx.lineTo(this.w, this.h - r);
-      ctx.arcTo(this.w, this.h, this.w - r, this.h, r);
-      ctx.lineTo(r, this.h);
-      ctx.arcTo(0, this.h, 0, this.h - r, r);
-      ctx.lineTo(0, r);
-      ctx.arcTo(0, 0, r, 0, r);
-      ctx.fill();
-      ctx.stroke();
-      ctx.closePath();
+      if (undefined === this.color) {
+
+        ctx.fillStyle = gradient;
+        ctx.strokeStyle = this.game.color.border;
+        ctx.beginPath();
+        ctx.moveTo(r,  0);
+        ctx.lineTo(this.w - r, 0);
+        ctx.arcTo(this.w, 0, this.w, r, r);
+        ctx.lineTo(this.w, this.h - r);
+        ctx.arcTo(this.w, this.h, this.w - r, this.h, r);
+        ctx.lineTo(r, this.h);
+        ctx.arcTo(0, this.h, 0, this.h - r, r);
+        ctx.lineTo(0, r);
+        ctx.arcTo(0, 0, r, 0, r);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+      } else {
+        ctx.fillStyle = '#f5a330';
+        ctx.strokeStyle = '#f5a330';
+        ctx.beginPath();
+        ctx.arc(0, this.w/2, 8, 0, Game.THREESIXTY, true);
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+      }
 
     },
 
