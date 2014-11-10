@@ -157,11 +157,11 @@ Breakout = {
     this.refreshDOM();
     this.score.reset();
     this.ball.reset({launch: true});
+    window.interval_ = setInterval(ballInterval, 1000);
   },
 
   onlose: function() {
     this.playSound('gameover');
-    window.counter = 40;
   },
 
   onleavegame: function() {
