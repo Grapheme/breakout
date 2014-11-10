@@ -366,7 +366,7 @@ Breakout = {
     resize: function() {
 
       this.chunk  = Math.floor(Math.min(this.game.width, this.game.height) / (Math.max(this.cfg.xchunks, this.cfg.ychunks) + 4)); // room for court plus 2 chunk wall either side
-      this.width  = 940;//this.cfg.xchunks * this.chunk;
+      this.width  = 960;//this.cfg.xchunks * this.chunk;
       this.height = window.innerHeight-100;//this.cfg.ychunks * this.chunk;
       /*this.width = window.innerWidth - 5;
       this.height = window.innerHeight-80;*/
