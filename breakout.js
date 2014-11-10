@@ -40,7 +40,7 @@ Breakout = {
     color: {
       background: 'rgba(200, 200, 200, 0)',
       foreground: 'green',
-      border:     '#222',
+      border:     'rgba(0,0,0,0.3)',
       wall:       '#fff',
       ball:       '#f4a332',
       paddle:     'rgb(245,111,37)',
@@ -88,7 +88,7 @@ Breakout = {
     this.height  = runner.height;
     this.storage = runner.storage();
     this.color   = cfg.color;
-    this.sound   = (this.storage.sound == "true");
+    this.sound   = true; // (this.storage.sound == "true");
     this.court   = Object.construct(Breakout.Court,  this, cfg.court);
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
@@ -312,7 +312,7 @@ Breakout = {
       }
       ctx.translate(this.scorewidth + 20, (this.height-paddle.h) / 2);
       for(var n = 0 ; n < this.lives ; n++) {
-        this.game.paddle.render.call(paddle, ctx);
+        //this.game.paddle.render.call(paddle, ctx);
         ctx.translate(paddle.w + 5, 0);
       }
 
@@ -405,13 +405,14 @@ Breakout = {
       for(n = 0 ; n < this.numbricks ; n++) {
         brick = this.bricks[n];
         if (!brick.hit) {
-          //ctx.fillStyle = brick.color;
-          //ctx.fillRect(brick.x, brick.y, brick.w, brick.h); 
-          //ctx.strokeRect(brick.x, brick.y, brick.w, brick.h);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; //brick.color;
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+          ctx.fillRect(brick.x, brick.y, brick.w, brick.h); 
+          ctx.strokeRect(brick.x, brick.y, brick.w, brick.h);
           var imageObj = new Image();
-          imageObj.src = 'images/brick.png';
+          imageObj.src = 'images/crown.png';
           //imageObj.onload = function() {
-          ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
+          ctx.drawImage(imageObj, brick.x + 2, brick.y + 2, 30, 15);
           //};
         }
       }
@@ -597,8 +598,13 @@ Breakout = {
     },
 
     draw: function(ctx) {
-      ctx.fillStyle = this.color;
-      ctx.strokeStyle = this.color;
+      var gradient = ctx.createLinearGradient(0, this.h, 0, 0);
+      gradient.addColorStop(0.36, 'rgb(239,151,40)');
+      gradient.addColorStop(0.68, 'rgb(245,162,47)');
+      gradient.addColorStop(0.84, 'rgb(217,149,64)');
+
+      ctx.fillStyle = gradient; //this.color;
+      ctx.strokeStyle = '#d99540'; //this.color;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Game.THREESIXTY, true);
       ctx.fill();
@@ -628,7 +634,7 @@ Breakout = {
     reset: function() {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
       this.w      = this.cfg.width  * this.game.court.chunk;
-      this.h      = this.cfg.height * this.game.court.chunk;
+      this.h      = 10, //this.cfg.height * this.game.court.chunk;
       this.minX   = this.game.court.left;
       this.maxX   = this.game.court.right - this.w;
       this.setpos(Game.random(this.minX, this.maxX), this.game.court.bottom - this.h);
@@ -668,11 +674,11 @@ Breakout = {
     render: function(ctx) {
 
       var gradient = ctx.createLinearGradient(0, this.h, 0, 0);
-      gradient.addColorStop(0.36, 'rgb(245,111,37)');
-      gradient.addColorStop(0.68, 'rgb(255,145,63)');
-      gradient.addColorStop(0.84, 'rgb(255,174,95)');
+      gradient.addColorStop(0.36, 'rgb(250,250,250)');
+      gradient.addColorStop(0.68, 'rgb(235,235,235)');
+      gradient.addColorStop(0.84, 'rgb(220,220,220)');
 
-      var r = this.h/2;
+      var r = this.h/4;
 
       ctx.fillStyle = gradient;
       ctx.strokeStyle = this.game.color.border;
