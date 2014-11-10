@@ -141,18 +141,10 @@ Breakout.Levels = [
   { colors: Breakout.Colors.vintage,
     bricks: [
       "", "", "",
-      "   AAaaAAaaAAaaAAaaAAaaAAaa   ",
-      "    BBbbBBbbBBbbBBbbBBbbBB    ",
-      "     CCccCCccCCccCCccCCcc     ",
-      "      DDddDDddDDddDDddDD      ",
-      "       EEeeEEeeEEeeEEee       ",
-      "        FFffFFffFFffFF        ",
-      "         GGggGGggGGgg         ",
-      "          HHhhHHhhHH          ",
-      "           IIiiIIii           ",
-      "            JJjjJJ            ",
-      "             KKkk             ",
-      "              LL              "
+      "     SSssSSssSSssSSssSS     ",
+      "       ssSSssSSssSSss       ",
+      "         SSssSSssSS         ",
+      "          ssSSssSS          "
     ]
   },
 

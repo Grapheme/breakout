@@ -383,10 +383,10 @@ Breakout = {
 
       for(n = 0 ; n < this.numbricks ; n++) {
         brick = this.bricks[n];
-        brick.x = this.left + (brick.pos.x1 * this.chunk);
-        brick.y = this.top  + (brick.pos.y  * this.chunk);
-        brick.w = (brick.pos.x2 - brick.pos.x1 + 1) * this.chunk;
-        brick.h = this.chunk;
+        brick.x = this.left + (brick.pos.x1 * this.chunk * 1.5);
+        brick.y = this.top  + (brick.pos.y  * this.chunk * 1.5);
+        brick.w = (brick.pos.x2 - brick.pos.x1 + 1) * this.chunk * 1.5;
+        brick.h = this.chunk * 1.5;
         Game.Math.bound(brick);
       }
 
@@ -420,7 +420,7 @@ Breakout = {
           var imageObj = new Image();
           imageObj.src = 'images/crown.png';
           //imageObj.onload = function() {
-          ctx.drawImage(imageObj, brick.x + 8, brick.y + 3, 30, 15);
+          //ctx.drawImage(imageObj, brick.x + 8, brick.y + 3, 30, 15);
           //};
         }
       }
@@ -457,7 +457,7 @@ Breakout = {
     },
 
     reset: function(options) {
-      this.radius   = this.cfg.radius * this.game.court.chunk;
+      this.radius   = this.cfg.radius * this.game.court.chunk * 0.85;
       this.speed    = this.cfg.speed  * this.game.court.chunk;
       this.maxspeed = this.speed * 1.5;
       this.color    = this.game.color.ball;
