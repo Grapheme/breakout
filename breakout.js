@@ -25,9 +25,9 @@ Breakout = {
       radius:  0.7,
       speed:   15,
       labels: {
-        3: { text: 'Внимание', fill: '#fff', stroke: '#555', font: 'normal 21pt arial' },
-        2: { text: 'Приготовьтесь', fill: '#fff', stroke: '#555', font: 'normal 21pt arial' },
-        1: { text: 'Начали',      fill: '#fff', stroke: '#555', font: 'normal 21pt arial' }
+        3: { text: 'Внимание', fill: '#fff', stroke: '#fff', font: 'normal 21pt arial' },
+        2: { text: 'Приготовьтесь', fill: '#fff', stroke: '#fff', font: 'normal 21pt arial' },
+        1: { text: 'Начали',      fill: '#fff', stroke: '#fff', font: 'normal 21pt arial' }
       }
     },
 
