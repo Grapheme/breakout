@@ -158,6 +158,7 @@ Breakout = {
     this.score.reset();
     this.ball.reset({launch: true});
     window.interval_ = setInterval(ballInterval, 1000);
+    $('btn_speed').hide();
   },
 
   onlose: function() {
