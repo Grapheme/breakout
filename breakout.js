@@ -25,9 +25,9 @@ Breakout = {
       radius:  0.7,
       speed:   15,
       labels: {
-        3: { text: 'Приготовьтесь', fill: '#000', stroke: 'black', font: 'normal 28pt arial' },
-        2: { text: 'Приготовьтесь',    fill: '#000', stroke: 'black', font: 'normal 28pt arial' },
-        1: { text: 'Начали',      fill: '#000', stroke: 'black', font: 'normal 28pt arial' }
+        3: { text: 'Внимание', fill: '#fff', stroke: '#555', font: 'normal 21pt arial' },
+        2: { text: 'Приготовьтесь', fill: '#fff', stroke: '#555', font: 'normal 21pt arial' },
+        1: { text: 'Начали',      fill: '#fff', stroke: '#555', font: 'normal 21pt arial' }
       }
     },
 
@@ -413,14 +413,14 @@ Breakout = {
       for(n = 0 ; n < this.numbricks ; n++) {
         brick = this.bricks[n];
         if (!brick.hit) {
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'; //brick.color;
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.25)'; //brick.color;
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
           ctx.fillRect(brick.x, brick.y, brick.w, brick.h); 
           ctx.strokeRect(brick.x, brick.y, brick.w, brick.h);
           var imageObj = new Image();
           imageObj.src = 'images/crown.png';
           //imageObj.onload = function() {
-          ctx.drawImage(imageObj, brick.x + 2, brick.y + 2, 30, 15);
+          ctx.drawImage(imageObj, brick.x + 8, brick.y + 3, 30, 15);
           //};
         }
       }

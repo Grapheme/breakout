@@ -46,6 +46,7 @@ body {
 #levels img.disabled:active { margin-top: 0; margin-left: 0; }
 
 #instructions {
+  /*
   background: rgba(0, 0, 0, .5);
       border: 2px solid #333;
        color: #fff;
@@ -53,11 +54,12 @@ body {
  white-space: nowrap;
   text-align: center;
        width: 18em;
+ font-weight: 300;
+  */
     position: absolute;
-         top: 5em;
-         left: 50%;
-         margin-left: -9em;
-         font-weight: 300;
+    bottom: 10em;
+    left: 50%;
+    margin-left: -105px;
 }
 #instructions b { color: #fff; text-decoration: underline; }
 
@@ -110,6 +112,18 @@ body {
 }
 
 
-#controls, #levels, .keyboard_ { opacity: 0; }
+#controls, #levels { opacity: 0; }
 
+#instructions {
+  border: 0 none;
+  background: none;
+  width: 211px;
+  height: 79px;
+}
+.keyboard, .touch {
+  background: url('images/btn_start.png') no-repeat;
+  width: 211px;
+  height: 79px;
+  border: none;
+}
 
