@@ -413,8 +413,8 @@ Breakout = {
       for(n = 0 ; n < this.numbricks ; n++) {
         brick = this.bricks[n];
         if (!brick.hit) {
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.25)'; //brick.color;
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.fillStyle = brick.color; //'rgba(255, 255, 255, 0.25)'; //brick.color;
+          ctx.strokeStyle = brick.color; //'rgba(255, 255, 255, 0.4)';
           ctx.fillRect(brick.x, brick.y, brick.w, brick.h); 
           ctx.strokeRect(brick.x, brick.y, brick.w, brick.h);
           var imageObj = new Image();

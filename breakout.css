@@ -5,6 +5,7 @@
 html, body {
   width: 100%;
   height: 768px;
+  overflow: hidden;
 }
 
 body {
@@ -58,7 +59,7 @@ body {
   */
     position: absolute;
     top: 60%;
-    left: 50%;
+    left: 495px;
     margin-left: -105px;
 }
 #instructions b { color: #fff; text-decoration: underline; }
@@ -125,5 +126,12 @@ body {
   width: 211px;
   height: 79px;
   border: none;
+}
+#counter {
+  color: #fff;
+  font: bold 28px 'Open Sans', Arial, sans-serif;
+  position: absolute;
+  top: 8px;
+  left: 250px;
 }
 
