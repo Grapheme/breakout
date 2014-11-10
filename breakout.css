@@ -46,18 +46,20 @@ body {
 #levels img.disabled:active { margin-top: 0; margin-left: 0; }
 
 #instructions {
-  background: #DDD;
+  background: rgba(0, 0, 0, .5);
       border: 2px solid #333;
-       color: #555;
+       color: #fff;
      padding: 0.5em 1em;
  white-space: nowrap;
   text-align: center;
        width: 18em;
-      margin: 0 auto;
     position: absolute;
          top: 5em;
+         left: 50%;
+         margin-left: -9em;
+         font-weight: 300;
 }
-#instructions b { color: black; }
+#instructions b { color: #fff; text-decoration: underline; }
 
 #instructions       .keyboard { display: block; }
 #instructions       .touch    { display: none;  }

@@ -25,9 +25,9 @@ Breakout = {
       radius:  0.7,
       speed:   15,
       labels: {
-        3: { text: 'ready...', fill: '#D82800', stroke: 'black', font: 'bold 28pt arial' },
-        2: { text: 'set..',    fill: '#FC9838', stroke: 'black', font: 'bold 28pt arial' },
-        1: { text: 'go!',      fill: '#80D010', stroke: 'black', font: 'bold 28pt arial' }
+        3: { text: 'Приготовьтесь', fill: '#000', stroke: 'black', font: 'normal 28pt arial' },
+        2: { text: 'Приготовьтесь',    fill: '#000', stroke: 'black', font: 'normal 28pt arial' },
+        1: { text: 'Начали',      fill: '#000', stroke: 'black', font: 'normal 28pt arial' }
       }
     },
 
@@ -38,14 +38,14 @@ Breakout = {
     },
 
     color: {
-      background: 'rgba(200, 200, 200, 0)',
-      foreground: 'green',
-      border:     'rgba(0,0,0,0.3)',
-      wall:       '#fff',
-      ball:       '#f4a332',
+      background: 'transparent',
+      foreground: 'transparent',
+      border:     'transparent',
+      wall:       'transparent',
+      ball:       'transparent',
       paddle:     'rgb(245,111,37)',
       score:      "#EFD279",
-      highscore:  "#AFD775"
+      highscore:  "transparent"
     },
 
     state: {
@@ -426,17 +426,10 @@ Breakout = {
       }
 
       ctx.fillStyle = this.game.color.wall;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(this.wall.top.left,     this.wall.top.top);
-      ctx.lineTo(this.wall.top.right,    this.wall.top.top);
-      ctx.lineTo(this.wall.top.right,    this.wall.right.bottom);
       ctx.lineTo(this.wall.right.left,   this.wall.right.bottom);
       ctx.lineTo(this.wall.right.left,   this.wall.top.bottom);
       ctx.lineTo(this.wall.left.right,   this.wall.top.bottom);
       ctx.lineTo(this.wall.left.right,   this.wall.left.bottom);
-      ctx.lineTo(this.wall.left.left,    this.wall.left.bottom);
-      ctx.lineTo(this.wall.top.left,     this.wall.top.top);
       ctx.fill();
       ctx.stroke();
       ctx.closePath();
