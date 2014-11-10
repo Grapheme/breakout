@@ -161,6 +161,7 @@ Breakout = {
 
   onlose: function() {
     this.playSound('gameover');
+    window.counter = 40;
   },
 
   onleavegame: function() {
