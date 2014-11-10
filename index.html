@@ -62,7 +62,9 @@
   setInterval(function(){
     if (counter > 0) {
       counter--;
-      document.getElementById('counter').innerHTML = counter;
+      document.getElementById('counter').innerText = counter;
+    } else {
+      game.lose();
     }
   }, 1000);
   
