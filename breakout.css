@@ -135,3 +135,14 @@ body {
   left: 250px;
 }
 
+#btn_speed {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 80%;
+  left: 5%;
+}
+
+#btn_speed img {
+  max-width: 100%;
+}

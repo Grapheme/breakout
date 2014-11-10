@@ -32,9 +32,9 @@ Breakout.Colors = {
     h: "#00572C", // dark green
     i: "#75D7AF", // mint
     j: "#027492", // brown
-    k: "#e74b25", // peach
+    k: 'rgba(130, 130, 130, 0.75)', // peach
     l: "#4dab4a",  // blue
-    s: "#f9ca26", // grass
+    s: 'rgba(255, 255, 255, 0.25)', // grass
   },
 
   liquidplanner: {
@@ -142,15 +142,15 @@ Breakout.Levels = [
   { colors: Breakout.Colors.vintage,
     bricks: [
       "",
-      "             KL             ",
-      "     SS     kkLL     SS     ",
-      "     KKll  lljjll  jjLL     ",      
-      "     JJssJKjjKKllSSkkSS     ",
-      "      LLjjKKssJJkkSSjj      ",
-      "       jjSSjjKKllSSjj       ",
-      "        JJkkJJllKKss        ",
-      "         JKkkKLllSS         ",
-      "          jjSSllkk          ",
+      "             SS             ",
+      "     ss     SSss     ss     ",
+      "     SSss  ssSSss  ssSS     ",      
+      "     SSkkSSssSSssSSssSS     ",
+      "      SSssSSkkSSssSSss      ",
+      "       ssSSssSSssKKss       ",
+      "        ssKKssSSssSS        ",
+      "         SSssSSssSS         ",
+      "          ssSSkkSS          ",
     ]
   },
 

@@ -107,7 +107,8 @@ Breakout = {
     Game.addEvent('prev',  'click',  this.prevLevel.bind(this, false));
     Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
-
+    
+    Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
     Game.addEvent('instructions',     'touchstart', this.play.bind(this));
     Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
     Game.addEvent(document.body,      'touchmove',  function(event) { event.preventDefault(); }); // prevent ipad bouncing up and down when finger scrolled
@@ -187,6 +188,11 @@ Breakout = {
   },
 
   hitBrick: function(brick) {
+    window.console.log(brick.c);
+    if (brick.c === 'k' || brick.c === 'K') {
+      window.console.log('fake');
+      this.ball.speed = 50;
+    }
     this.playSound('brick');
     this.court.remove(brick);
     this.score.increase(brick.score);
@@ -210,6 +216,7 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
+  restoreSpeed: function()      { this.ball.speed = this.speed * 1.5; },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
     ctx.fillStyle    = this.color.foreground;
@@ -436,6 +443,7 @@ Breakout = {
     },
 
     remove: function(brick) {
+      //console.log('HIT');
       brick.hit = true;
       this.numhits++;
       this.rerender = true;
