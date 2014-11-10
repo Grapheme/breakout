@@ -108,6 +108,7 @@ Breakout = {
     Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
     
+    //Game.addEvent('btn_speed',        'click', this.restoreSpeed.bind(this));
     Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
     Game.addEvent('instructions',     'touchstart', this.play.bind(this));
     Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
@@ -193,10 +194,14 @@ Breakout = {
       this.ball.speed = 50;
       $('btn_speed').show();
     }
+    if (brick.c === 'l' || brick.c === 'L') {
+      this.score.increase(brick.score * 20);
+    } else {
+      this.score.increase(brick.score);
+    }
     this.playSound('brick');
     this.court.remove(brick);
-    this.score.increase(brick.score);
-    this.ball.speed += 10 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
+    this.ball.speed += 30 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
     if (this.court.empty())
       this.winLevel();
   },
@@ -426,9 +431,9 @@ Breakout = {
           ctx.strokeRect(brick.x, brick.y, brick.w, brick.h);
           var imageObj = new Image();
           imageObj.src = 'images/crown.png';
-          //imageObj.onload = function() {
-          //ctx.drawImage(imageObj, brick.x + 8, brick.y + 3, 30, 15);
-          //};
+          if (brick.c === 'l' || brick.c === 'L') {
+            ctx.drawImage(imageObj, brick.x + 18, brick.y + 8, 30, 15);
+          }
         }
       }
 
