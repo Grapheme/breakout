@@ -47,9 +47,11 @@
   <script src="breakout.js"></script>
   <script src="levels.js"></script>
   <script>
+  var game;
   Game.ready(function() {
-    var game = Game.start('canvas', Breakout);
+    game = Game.start('canvas', Breakout);
   });
+  setTimeout(function() { game.setLevel(1); }, 100);
   </script>
 
 </body> 
