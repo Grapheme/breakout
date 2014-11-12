@@ -1,113 +1,89 @@
-<!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
-
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
+<!DOCTYPE html> 
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link href="breakout.css" media="screen, print" rel="stylesheet" type="text/css" /> 
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div id="counter">60</div>
-        <a id="btn_speed" href="#">
-          <img src="images/btn_speed.png" /> 
-        </a>
-        <div class="gps_ring"></div>
+<head>
+  <title>Crown Balls</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width", initial-scale=1.0, user-scalable="no"/>
+  <link href="breakout.css" media="screen, print" rel="stylesheet" type="text/css" /> 
+</head> 
+ 
+<body> 
 
-        <div id="breakout">
-          <canvas id="canvas">
-            <div class='unsupported'>
-              Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
-            </div>
-          </canvas>
-          <div id="levels">
-            <img id="next" class="disabled" src="images/up.png"   title="next level">
-            <img id="prev" class="disabled" src="images/down.png" title="previous level">
-            <span id="label">level:</span><span id="level"></span>
-          </div>
-          
-          <div id="controls">
-            <input id='sound' type='checkbox' />
-            <label for='sound'>sound</label>
-          </div>
-          
-          <div id="instructions" style='display:none;'>
-            <div class='keyboard'>
-              <!--
-              <b>space</b> to start<br>
-              <b>left/right</b> to move paddle<br>
-              <b>up/down</b> to change level
-              -->
-            </div>
-            <div class='touch'>
-              <!--
-              Нажми на экран, чтобы начать
-              -->
-            </div>
-          </div>
-        </div>
+  <div id="counter">60</div>
+  <ul id="switcher">
+    <li class="active">60 сек</li>
+    <li>80 сек</li>
+  </ul>
+  <ul id="switcher2">
+    <li class="active">5000</li>
+    <li>7000</li>
+    <li>10000</li>
+  </ul>
+  <a id="btn_speed" href="#">
+    <img src="images/btn_speed.png" /> 
+  </a>
+  <div id="gps_ring"></div>
 
-        
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-        <script src="game.js"></script>
-        <script src="breakout.js"></script>
-        <script src="levels.js"></script>
-        <script>
-        var game,
-            interval_;
-        var counter = 60;
+  <div id="breakout">
+    <canvas id="canvas">
+      <div class='unsupported'>
+        Sorry, game cannot be run because the &lt;canvas&gt; element is not supported
+      </div>
+    </canvas>
+    <div id="levels">
+      <img id="next" class="disabled" src="images/up.png"   title="next level">
+      <img id="prev" class="disabled" src="images/down.png" title="previous level">
+      <span id="label">level:</span><span id="level"></span>
+    </div>
+    
+    <div id="controls">
+      <input id='sound' type='checkbox' />
+      <label for='sound'>sound</label>
+    </div>
+    
+    <div id="instructions" style='display:none;'>
+      <div class='keyboard'>
+        <!--
+        <b>space</b> to start<br>
+        <b>left/right</b> to move paddle<br>
+        <b>up/down</b> to change level
+        -->
+      </div>
+      <div class='touch'>
+        <!--
+        Нажми на экран, чтобы начать
+        -->
+      </div>
+    </div>
+  </div>
 
-        function ballInterval() {
-          if (counter > 0) {
-            counter--;
-            document.getElementById('counter').innerText = counter;
-          } else {
-            game.lose();
-            counter = 60;
-            clearInterval(interval_);
-          }
-        }
-        </script>  
-        <script src="game.js"></script>
-        <script src="breakout.js"></script>
-        <script src="levels.js"></script>
-        <script>
-        Game.ready(function() {
-          game = Game.start('canvas', Breakout);
-          $('btn_speed').hide();
-        });
-        setTimeout(function() { game.setLevel(5); }, 100);      
-        </script>
+  <script>
+  var game,
+      interval_;
+  var counter = 60;
 
-    </body>
+  function ballInterval() {
+    if (counter > 0) {
+      counter--;
+      document.getElementById('counter').innerText = counter;
+    } else {
+      game.lose();
+      counter = 60;
+      clearInterval(interval_);
+    }
+  }
+  </script>  
+  <script src="game.js"></script>
+  <script src="breakout.js"></script>
+  <script src="levels.js"></script>
+  <script>
+  Game.ready(function() {
+    game = Game.start('canvas', Breakout);
+    $('btn_speed').hide();
+    $('gps_ring').hide();
+  });
+  setTimeout(function() { game.setLevel(5); }, 100);      
+  </script>
+
+</body> 
 </html>
-
-
-  
