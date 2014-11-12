@@ -140,11 +140,29 @@ body {
   height: 151px;
   position: absolute;
   top: 570px;
-  left: 5%;
+  left: 50px;
   z-index: 99999;
 
 }
 
 #btn_speed img {
   max-width: 100%;
+}
+
+.gps_ring {
+    border: 4px solid #999;
+    -webkit-border-radius: 300px;
+    height: 151px;
+    width: 150px;
+    position: absolute;
+    left:45px;
+    top:570px;
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    opacity: 0.0
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.7, 0.7); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1, 1); opacity: 0.0;}
 }

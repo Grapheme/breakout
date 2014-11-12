@@ -86,6 +86,7 @@ Breakout = {
     this.runner  = runner;
     /*this.width   = runner.width;
     this.height  = runner.height;*/
+    this.filter  = false;
     this.width   = 1024;
     this.height  = 768;
     this.storage = runner.storage();
@@ -108,8 +109,8 @@ Breakout = {
     Game.addEvent('next',  'click',  this.nextLevel.bind(this, false));
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
     
-    //Game.addEvent('btn_speed',        'click', this.restoreSpeed.bind(this));
-    Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
+    Game.addEvent('btn_speed',        'click', this.restoreSpeed.bind(this));
+    //Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
     Game.addEvent('instructions',     'touchstart', this.play.bind(this));
     Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
     Game.addEvent(document.body,      'touchmove',  function(event) { event.preventDefault(); }); // prevent ipad bouncing up and down when finger scrolled
@@ -163,6 +164,7 @@ Breakout = {
 
   onlose: function() {
     this.playSound('gameover');
+    this.filter = false;
   },
 
   onleavegame: function() {
@@ -193,8 +195,10 @@ Breakout = {
   hitBrick: function(brick) {
     window.console.log(brick.c);
     if (brick.c === 'k' || brick.c === 'K') {
-      this.ball.speed = 50;
-      $('btn_speed').show();
+      //this.ball.speed = 50;
+      //$('btn_speed').show();
+      this.filter = true;
+      this.paddle.rerender = true;
     }
     if (brick.c === 'l' || brick.c === 'L') {
       this.score.increase(brick.score * 20);
@@ -223,7 +227,7 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
-  restoreSpeed: function()      { this.ball.speed = 350; $('btn_speed').hide(); },
+  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; $('btn_speed').hide(); },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
     ctx.fillStyle    = this.color.foreground;
@@ -380,11 +384,11 @@ Breakout = {
     resize: function() {
 
       this.chunk  = Math.floor(Math.min(this.game.width, this.game.height) / (Math.max(this.cfg.xchunks, this.cfg.ychunks) + 4)); // room for court plus 2 chunk wall either side
-      this.width  = 960;//this.cfg.xchunks * this.chunk;
+      this.width  = 1025;//this.cfg.xchunks * this.chunk;
       this.height = window.innerHeight-100;//this.cfg.ychunks * this.chunk;
       /*this.width = window.innerWidth - 5;
       this.height = window.innerHeight-80;*/
-      this.left   = 30; //Math.floor((this.game.width  - this.width)  / 2);
+      this.left   = -1; //Math.floor((this.game.width  - this.width)  / 2);
       this.top    = 50; //Math.floor((this.game.height - this.height) / 2);
       this.right  = this.left + this.width;
       this.bottom = this.top  + this.height;
@@ -397,10 +401,11 @@ Breakout = {
 
       for(n = 0 ; n < this.numbricks ; n++) {
         brick = this.bricks[n];
-        brick.x = this.left + (brick.pos.x1 * this.chunk * 1.5);
-        brick.y = this.top  + (brick.pos.y  * this.chunk * 1.5);
-        brick.w = (brick.pos.x2 - brick.pos.x1 + 1) * this.chunk * 1.5;
-        brick.h = this.chunk * 1.5;
+        //brick.x = this.left + (brick.pos.x1 * this.chunk * 1.85);
+        brick.x = this.left + (brick.pos.x1 * this.chunk * 1.85) - 70;
+        brick.y = this.top  + (brick.pos.y  * this.chunk * 1.85);
+        brick.w = (brick.pos.x2 - brick.pos.x1 + 1) * this.chunk * 1.85;
+        brick.h = this.chunk * 1.85;
         Game.Math.bound(brick);
       }
 
@@ -432,9 +437,15 @@ Breakout = {
           ctx.fillRect(brick.x, brick.y, brick.w, brick.h); 
           ctx.strokeRect(brick.x, brick.y, brick.w, brick.h);
           var imageObj = new Image();
-          imageObj.src = 'images/crown.png';
           if (brick.c === 'l' || brick.c === 'L') {
-            ctx.drawImage(imageObj, brick.x + 18, brick.y + 8, 30, 15);
+            imageObj.src = 'images/brick_good.png';
+            ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
+          } else if (brick.c === 'k' || brick.c === 'K') {
+            imageObj.src = 'images/brick_bad.png';
+            ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
+          } else {
+            imageObj.src = 'images/brick_normal.png';
+            ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
           }
         }
       }
@@ -580,9 +591,13 @@ Breakout = {
             return;
         }
 
-        if ((closest.item == this.game.paddle) && (closest.point.d == 'top')) {
+        if ((closest.item == this.game.paddle) && (closest.point.d == 'top')) {          
           p2.dx = this.speed * (closest.point.x - (this.game.paddle.left + this.game.paddle.w/2)) / (this.game.paddle.w/2);
           this.game.playSound('paddle');
+          if (true === this.game.filter) {
+            this.game.ball.speed = 50;
+            $('btn_speed').show();
+          }
         }
 
         this.setpos(closest.point.x, closest.point.y);
@@ -614,17 +629,17 @@ Breakout = {
     },
 
     draw: function(ctx) {
-      var gradient = ctx.createLinearGradient(0, this.h, 0, 0);
-      gradient.addColorStop(0.36, 'rgb(239,151,40)');
-      gradient.addColorStop(0.68, 'rgb(245,162,47)');
-      gradient.addColorStop(0.84, 'rgb(217,149,64)');
+      var gradient = ctx.createLinearGradient(0, this.radius, 0, 0);
+      gradient.addColorStop(0, 'rgb(251,184,91)');
+      //gradient.addColorStop(0.4, 'rgb(243,128,63)');
+      gradient.addColorStop(0.8, 'rgb(208,83,40)');
 
       ctx.fillStyle = gradient; //this.color;
       ctx.strokeStyle = '#d99540'; //this.color;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Game.THREESIXTY, true);
       ctx.fill();
-      ctx.stroke();
+      //ctx.stroke();
       ctx.closePath();
 
       if (this.label) {
@@ -650,7 +665,7 @@ Breakout = {
     reset: function() {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
       this.w      = this.cfg.width  * this.game.court.chunk;
-      this.h      = 10; //this.cfg.height * this.game.court.chunk;
+      this.h      = 18; //this.cfg.height * this.game.court.chunk;
       this.r      = 2;
       this.minX   = this.game.court.left;
       this.maxX   = this.game.court.right - this.w;
@@ -691,14 +706,18 @@ Breakout = {
     render: function(ctx) {
 
       var gradient = ctx.createLinearGradient(0, this.h, 0, 0);
-      gradient.addColorStop(0.36, 'rgb(250,250,250)');
-      gradient.addColorStop(0.68, 'rgb(235,235,235)');
-      gradient.addColorStop(0.84, 'rgb(220,220,220)');
-
       var r = this.r;
 
       if (undefined === this.color) {
-
+        if (true === game.filter) {
+          gradient.addColorStop(0, 'rgb(206,203,201)');
+          gradient.addColorStop(0.6, 'rgb(141,101,44)');
+          gradient.addColorStop(1, 'rgb(255,254,254)');
+        } else {
+          gradient.addColorStop(0, 'rgb(206,203,201)');
+          gradient.addColorStop(0.6, 'rgb(226,217,218)');
+          gradient.addColorStop(1, 'rgb(255,254,254)');
+        }
         ctx.fillStyle = gradient;
         ctx.strokeStyle = this.game.color.border;
         ctx.beginPath();

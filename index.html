@@ -9,10 +9,11 @@
  
 <body> 
 
-  <div id="counter">40</div>
+  <div id="counter">60</div>
   <a id="btn_speed" href="#">
     <img src="images/btn_speed.png" /> 
   </a>
+  <div class="gps_ring"></div>
 
   <div id="breakout">
     <canvas id="canvas">
@@ -46,17 +47,11 @@
       </div>
     </div>
   </div>
-  
-  <script src="game.js"></script>
-  <script src="breakout.js"></script>
-  <script src="levels.js"></script>
+
   <script>
-  var game;
-  Game.ready(function() {
-    game = Game.start('canvas', Breakout);
-    $('btn_speed').hide();
-  });
-  setTimeout(function() { game.setLevel(5); }, 100);    
+  var game,
+      interval_;
+  var counter = 60;
 
   function ballInterval() {
     if (counter > 0) {
@@ -64,13 +59,20 @@
       document.getElementById('counter').innerText = counter;
     } else {
       game.lose();
-      counter = 40;
+      counter = 60;
       clearInterval(interval_);
     }
   }
-  var counter = 40;
-  var interval_;
-  
+  </script>  
+  <script src="game.js"></script>
+  <script src="breakout.js"></script>
+  <script src="levels.js"></script>
+  <script>
+  Game.ready(function() {
+    game = Game.start('canvas', Breakout);
+    $('btn_speed').hide();
+  });
+  setTimeout(function() { game.setLevel(5); }, 100);      
   </script>
 
 </body> 
