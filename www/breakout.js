@@ -25,6 +25,7 @@ Breakout = {
       radius:  0.7,
       speed:   15,
       labels: {
+        4: { text: 'ЦЕЛЬ 5000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         3: { text: 'ЦЕЛЬ 5000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         2: { text: '2', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
         1: { text: '1', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' }
@@ -561,7 +562,7 @@ Breakout = {
 
     launch: function() {
       if (!this.moving || this.countdown) {
-        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 3 : this.countdown - 1;
+        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 4 : this.countdown - 1;
         if (this.countdown > 0) {
           this.label = this.launchLabel(this.countdown);
           this.delayTimer = setTimeout(this.launch.bind(this), 1000);
