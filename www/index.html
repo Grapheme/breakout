@@ -11,8 +11,8 @@
 
   <div id="counter">60</div>
   <ul id="switcher">
-    <li class="active">60 сек</li>
-    <li>80 сек</li>
+    <li class="active">60 sec</li>
+    <li>80 sec</li>
   </ul>
   <ul id="switcher2">
     <li class="active">5000</li>
@@ -23,6 +23,7 @@
     <img src="images/btn_speed.png" /> 
   </a>
   <div id="gps_ring"></div>
+  <div id="crown"></div>
 
   <div id="breakout">
     <canvas id="canvas">
@@ -82,7 +83,7 @@
     $('btn_speed').hide();
     $('gps_ring').hide();
   });
-  setTimeout(function() { game.setLevel(5); }, 100);      
+  setTimeout(function() { game.setLevel(5); }, 50);      
   </script>
 
 </body> 
