@@ -148,7 +148,6 @@ Breakout.Levels = [
       "     SSkkLLssSSssSSllKK     ",
       "      SSssSSkkSSllSSss      ",
       "       ssSSssSSssKKss       ",
-      "        ssSSssSSssSS        ",
       "         LLkkSSllKK         ",
     ]
   },

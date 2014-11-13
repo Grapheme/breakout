@@ -25,7 +25,7 @@ Breakout = {
       radius:  0.7,
       speed:   15,
       labels: {
-        3: { text: '3', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
+        3: { text: 'ЦЕЛЬ 5000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         2: { text: '2', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
         1: { text: '1', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' }
       }
@@ -87,6 +87,7 @@ Breakout = {
     /*this.width   = runner.width;
     this.height  = runner.height;*/
     this.filter  = false;
+    this.win_    = false;
     this.width   = 1024;
     this.height  = 768;
     this.storage = runner.storage();
@@ -113,6 +114,9 @@ Breakout = {
     
     Game.addEvent('btn_speed',        'click', this.restoreSpeed.bind(this));
     Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
+    Game.addEvent('refresh',          'click', this.restart.bind(this));
+    Game.addEvent('refresh',          'touchstart', this.restart.bind(this));
+
     Game.addEvent('instructions',     'touchstart', this.play.bind(this));
     Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
     Game.addEvent(document.body,      'touchmove',  function(event) { event.preventDefault(); }); // prevent ipad bouncing up and down when finger scrolled
@@ -172,6 +176,22 @@ Breakout = {
     $('gps_ring').hide();
     $('counter').innerText = 60;
     clearInterval(window.interval_);
+    if (this.score.score > 5000 || this.win_) {
+      $('gameover_3').show();
+      setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
+    } else if (this.court.empty()) {
+      $('gameover_3').show();
+      setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
+    } else if (window.counter == 60) {
+      $('gameover_2').show();
+      setTimeout(function() { $('gameover_2').hide(); $('night').show(); }, 4000);    
+    } else {
+      $('gameover_1').show();
+      setTimeout(function() { $('gameover_1').hide(); $('night').show(); }, 4000);    
+    }    
+    setTimeout(function() { $('night').hide(); }, 10000);    
+    window.counter = 60;
+    this.win_ = false;
   },
 
   onleavegame: function() {
@@ -202,21 +222,30 @@ Breakout = {
   hitBrick: function(brick) {
     window.console.log(brick.c);
     if (brick.c === 'k' || brick.c === 'K') {
-      //this.ball.speed = 50;
-      //$('btn_speed').show();
-      this.filter = true;
-      this.paddle.rerender = true;
+        //this.ball.speed = 50;
+        //$('btn_speed').show();
+        this.filter = true;
+        this.paddle.rerender = true;
+        this.court.remove(brick);
     }
-    if (brick.c === 'l' || brick.c === 'L') {
-      this.score.increase(brick.score * 20);
-    } else {
-      this.score.increase(brick.score);
+
+    if (this.filter === false) {
+        if (brick.c === 'l' || brick.c === 'L') {
+            this.score.increase(brick.score * 15);
+        } else {
+            this.score.increase(brick.score);
+        }
+        this.court.remove(brick);
+        this.ball.speed += 30 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
     }
+    
     this.playSound('brick');
-    this.court.remove(brick);
-    this.ball.speed += 30 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
-    if (this.court.empty())
-      this.winLevel();
+    
+    if (this.court.empty()) {
+      this.win_ = true;
+      this.lose();
+      //this.winLevel();
+    }
   },
 
   resetLevel: function() { this.setLevel(); },
@@ -234,7 +263,8 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
-  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; $('btn_speed').hide(); $('gps_ring').hide(); },
+  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
+  restart:      function()      { this.lose(); },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
     ctx.fillStyle    = this.color.foreground;
@@ -285,9 +315,12 @@ Breakout = {
     resetLives: function()  { this.setLives(this.cfg.lives.initial);                       }, 
     setLives:   function(n) { this.lives = n; this.rerender = true;                        },
     gainLife:   function()  { this.setLives(Math.min(this.cfg.lives.max, this.lives + 1)); },
-    loseLife:   function()  { this.setLives(this.lives-1); return (this.lives == 0);       },
+    loseLife:   function()  { this.game.filter = false; this.game.paddle.rerender = true; this.setLives(this.lives-1); return (this.lives == 0);  },
  
     update: function(dt) {
+      //if (this.score > 5000) {
+      //  this.game.lose();
+      //}
       if (this.vscore < this.score) {
         this.vscore = Math.min(this.score, this.vscore + 10);
         this.rerender = true;
@@ -295,6 +328,7 @@ Breakout = {
     },
 
     measure: function(ctx) {
+      console.log('measure');
       this.left   = this.game.court.left;
       this.top    = this.game.court.top - this.game.court.wall.size*2;
       this.width  = this.game.court.width;
@@ -603,8 +637,8 @@ Breakout = {
           p2.dx = this.speed * (closest.point.x - (this.game.paddle.left + this.game.paddle.w/2)) / (this.game.paddle.w/2);
           this.game.playSound('paddle');
           if (true === this.game.filter) {
-            //this.game.ball.speed = 50;
-            this.game.ball.reset();
+            this.game.ball.speed = 0;
+            //this.game.ball.reset();
             $('btn_speed').show();
             $('gps_ring').show();
           }
@@ -662,8 +696,8 @@ Breakout = {
         ctx.fillStyle = this.label.fill;
         ctx.strokeStyle = this.label.stroke;
         ctx.lineWidth = 0.5;
-        ctx.fillText(this.label.text,   this.label.x, this.label.y);
-        ctx.strokeText(this.label.text, this.label.x, this.label.y);
+        ctx.fillText(this.label.text,   this.label.x, this.label.y - 50);
+        ctx.strokeText(this.label.text, this.label.x, this.label.y - 50);
       }
     }
 
@@ -725,10 +759,10 @@ Breakout = {
 
       if (undefined === this.color) {
         if (true === game.filter) {
-          gradient.addColorStop(0, 'rgb(90,68,38)');
-          gradient.addColorStop(0.3, 'rgb(120,98,67)');
-          gradient.addColorStop(0.6, 'rgb(120,98,67)');
-          gradient.addColorStop(1, 'rgb(90,68,38)');
+          gradient.addColorStop(0, 'rgb(190,190,190)');
+          gradient.addColorStop(0.3, 'rgb(140,140,140)');
+          gradient.addColorStop(0.6, 'rgb(140,140,140)');
+          gradient.addColorStop(1, 'rgb(200,200,200)');
         } else {
           gradient.addColorStop(0, 'rgb(207,204,207)');
           gradient.addColorStop(0.2, 'rgb(191,188,186)');

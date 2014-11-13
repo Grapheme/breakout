@@ -6,7 +6,7 @@ Breakout = {
 
   Defaults: {
 
-    fps: 60,
+    fps: 120,
     stats: false,
 
     score: {
@@ -25,9 +25,9 @@ Breakout = {
       radius:  0.7,
       speed:   15,
       labels: {
-        3: { text: 'Внимание', fill: '#fff', stroke: '#fff', font: 'normal 21pt arial' },
-        2: { text: 'Приготовьтесь', fill: '#fff', stroke: '#fff', font: 'normal 21pt arial' },
-        1: { text: 'Начали',      fill: '#fff', stroke: '#fff', font: 'normal 21pt arial' }
+        3: { text: 'ЦЕЛЬ 5000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
+        2: { text: '2', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
+        1: { text: '1', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' }
       }
     },
 
@@ -44,7 +44,7 @@ Breakout = {
       wall:       'transparent',
       ball:       'transparent',
       paddle:     'rgb(245,111,37)',
-      score:      "#EFD279",
+      score:      "#ffffff",
       highscore:  "transparent"
     },
 
@@ -87,6 +87,7 @@ Breakout = {
     /*this.width   = runner.width;
     this.height  = runner.height;*/
     this.filter  = false;
+    this.win_    = false;
     this.width   = 1024;
     this.height  = 768;
     this.storage = runner.storage();
@@ -96,12 +97,14 @@ Breakout = {
     this.paddle  = Object.construct(Breakout.Paddle, this, cfg.paddle);
     this.ball    = Object.construct(Breakout.Ball,   this, cfg.ball);
     this.score   = Object.construct(Breakout.Score,  this, cfg.score);
+    this.score.reset();
     Game.loadSounds({sounds: cfg.sounds});
   },
 
   onstartup: function() { // the event that fires the initial state transition occurs when Game.Runner constructs our StateMachine
     this.addEvents();
     this.runner.start(); // start the 60fps update/draw game loop
+    this.score.reset();
   },
 
   addEvents: function() {
@@ -110,7 +113,10 @@ Breakout = {
     Game.addEvent('sound', 'change', this.toggleSound.bind(this, false));
     
     Game.addEvent('btn_speed',        'click', this.restoreSpeed.bind(this));
-    //Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
+    Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
+    Game.addEvent('refresh',          'click', this.restart.bind(this));
+    Game.addEvent('refresh',          'touchstart', this.restart.bind(this));
+
     Game.addEvent('instructions',     'touchstart', this.play.bind(this));
     Game.addEvent(this.runner.canvas, 'touchmove',  this.ontouchmove.bind(this));
     Game.addEvent(document.body,      'touchmove',  function(event) { event.preventDefault(); }); // prevent ipad bouncing up and down when finger scrolled
@@ -160,11 +166,32 @@ Breakout = {
     this.ball.reset({launch: true});
     window.interval_ = setInterval(ballInterval, 1000);
     $('btn_speed').hide();
+    $('gps_ring').hide();
   },
 
   onlose: function() {
     this.playSound('gameover');
     this.filter = false;
+    $('btn_speed').hide();
+    $('gps_ring').hide();
+    $('counter').innerText = 60;
+    clearInterval(window.interval_);
+    if (this.score.score > 5000 || this.win_) {
+      $('gameover_3').show();
+      setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
+    } else if (this.court.empty()) {
+      $('gameover_3').show();
+      setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
+    } else if (window.counter == 60) {
+      $('gameover_2').show();
+      setTimeout(function() { $('gameover_2').hide(); $('night').show(); }, 4000);    
+    } else {
+      $('gameover_1').show();
+      setTimeout(function() { $('gameover_1').hide(); $('night').show(); }, 4000);    
+    }    
+    setTimeout(function() { $('night').hide(); }, 10000);    
+    window.counter = 60;
+    this.win_ = false;
   },
 
   onleavegame: function() {
@@ -195,21 +222,30 @@ Breakout = {
   hitBrick: function(brick) {
     window.console.log(brick.c);
     if (brick.c === 'k' || brick.c === 'K') {
-      //this.ball.speed = 50;
-      //$('btn_speed').show();
-      this.filter = true;
-      this.paddle.rerender = true;
+        //this.ball.speed = 50;
+        //$('btn_speed').show();
+        this.filter = true;
+        this.paddle.rerender = true;
+        this.court.remove(brick);
     }
-    if (brick.c === 'l' || brick.c === 'L') {
-      this.score.increase(brick.score * 20);
-    } else {
-      this.score.increase(brick.score);
+
+    if (this.filter === false) {
+        if (brick.c === 'l' || brick.c === 'L') {
+            this.score.increase(brick.score * 15);
+        } else {
+            this.score.increase(brick.score);
+        }
+        this.court.remove(brick);
+        this.ball.speed += 30 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
     }
+    
     this.playSound('brick');
-    this.court.remove(brick);
-    this.ball.speed += 30 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
-    if (this.court.empty())
-      this.winLevel();
+    
+    if (this.court.empty()) {
+      this.win_ = true;
+      this.lose();
+      //this.winLevel();
+    }
   },
 
   resetLevel: function() { this.setLevel(); },
@@ -227,7 +263,8 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
-  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; $('btn_speed').hide(); },
+  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
+  restart:      function()      { this.lose(); },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
     ctx.fillStyle    = this.color.foreground;
@@ -271,16 +308,19 @@ Breakout = {
     reset:    function()  { this.set(0); this.resetLives(); },
     set:      function(n) { this.score = this.vscore = n; this.rerender = true; },
     increase: function(n) { this.score = this.score + n;  this.rerender = true; },
-    format:   function(n) { return ("0000000" + n).slice(-7); },
+    format:   function(n) { return ("00000" + n).slice(-7); },
     load:     function()  { this.highscore = this.game.storage.highscore ? parseInt(this.game.storage.highscore) : 1000; },
     save:     function()  { if (this.score > this.highscore) this.game.storage.highscore = this.highscore = this.score;  },
 
     resetLives: function()  { this.setLives(this.cfg.lives.initial);                       }, 
     setLives:   function(n) { this.lives = n; this.rerender = true;                        },
     gainLife:   function()  { this.setLives(Math.min(this.cfg.lives.max, this.lives + 1)); },
-    loseLife:   function()  { this.setLives(this.lives-1); return (this.lives == 0);       },
+    loseLife:   function()  { this.game.filter = false; this.game.paddle.rerender = true; this.setLives(this.lives-1); return (this.lives == 0);  },
  
     update: function(dt) {
+      //if (this.score > 5000) {
+      //  this.game.lose();
+      //}
       if (this.vscore < this.score) {
         this.vscore = Math.min(this.score, this.vscore + 10);
         this.rerender = true;
@@ -288,12 +328,13 @@ Breakout = {
     },
 
     measure: function(ctx) {
+      console.log('measure');
       this.left   = this.game.court.left;
       this.top    = this.game.court.top - this.game.court.wall.size*2;
       this.width  = this.game.court.width;
       this.height = this.game.court.wall.size*2;
-      this.scorefont = "bold " + Math.max(9, this.game.court.wall.size - 2) + "pt arial";
-      this.highfont  = ""      + Math.max(9, this.game.court.wall.size - 8) + "pt arial";
+      this.scorefont = "bold " + Math.max(9, this.game.court.wall.size - 2) + "pt 'ds-digitalbold'";
+      this.highfont  = ""      + Math.max(9, this.game.court.wall.size - 8) + "pt 'ds-digitalbold'";
       ctx.save();
       ctx.font = this.scorefont;
       this.scorewidth = ctx.measureText(this.format(0)).width;
@@ -319,7 +360,7 @@ Breakout = {
       ctx.fillStyle    = this.game.color.score;
       ctx.font         = this.scorefont;
       text             = this.format(this.vscore);
-      ctx.fillText(text, 0, this.height/2);
+      ctx.fillText(text, 50, this.height/2);
 
       ctx.fillStyle = ishigh ? this.game.color.score : this.game.color.highscore;
       text          = "HIGH SCORE: " + this.format(ishigh ? this.score : this.highscore);
@@ -405,7 +446,7 @@ Breakout = {
         brick.x = this.left + (brick.pos.x1 * this.chunk * 1.85) - 70;
         brick.y = this.top  + (brick.pos.y  * this.chunk * 1.85);
         brick.w = (brick.pos.x2 - brick.pos.x1 + 1) * this.chunk * 1.85;
-        brick.h = this.chunk * 1.85;
+        brick.h = this.chunk * 1.85 - 1;
         Game.Math.bound(brick);
       }
 
@@ -483,7 +524,7 @@ Breakout = {
     },
 
     reset: function(options) {
-      this.radius   = this.cfg.radius * this.game.court.chunk * 0.85;
+      this.radius   = 20; // this.cfg.radius * this.game.court.chunk * 0.85;
       this.speed    = this.cfg.speed  * this.game.court.chunk;
       this.maxspeed = this.speed * 1.5;
       this.color    = this.game.color.ball;
@@ -496,8 +537,9 @@ Breakout = {
         this.game.court.wall.left,
         this.game.court.wall.right,
       ].concat(this.game.court.bricks);
-      if (options && options.launch)
+      if (options && options.launch) {
         this.launch();
+      }
     },
 
     moveToPaddle: function() {
@@ -595,8 +637,10 @@ Breakout = {
           p2.dx = this.speed * (closest.point.x - (this.game.paddle.left + this.game.paddle.w/2)) / (this.game.paddle.w/2);
           this.game.playSound('paddle');
           if (true === this.game.filter) {
-            this.game.ball.speed = 50;
+            this.game.ball.speed = 0;
+            //this.game.ball.reset();
             $('btn_speed').show();
+            $('gps_ring').show();
           }
         }
 
@@ -629,26 +673,31 @@ Breakout = {
     },
 
     draw: function(ctx) {
-      var gradient = ctx.createLinearGradient(0, this.radius, 0, 0);
-      gradient.addColorStop(0, 'rgb(251,184,91)');
-      //gradient.addColorStop(0.4, 'rgb(243,128,63)');
-      gradient.addColorStop(0.8, 'rgb(208,83,40)');
+      var gradient = ctx.createRadialGradient(238, 50, 10, 238, 50, 300);
+      gradient.addColorStop(0, 'rgb(207,204,207)');
+      gradient.addColorStop(1, 'rgb(255,254,254)');
 
-      ctx.fillStyle = gradient; //this.color;
-      ctx.strokeStyle = '#d99540'; //this.color;
+      /*
+      ctx.fillStyle = gradient;
+      ctx.strokeStyle = '#d99540';
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Game.THREESIXTY, true);
       ctx.fill();
-      //ctx.stroke();
+      ctx.stroke();
       ctx.closePath();
+      */
+
+      var imageObj = new Image();
+      imageObj.src = 'images/ball.png';
+      ctx.drawImage(imageObj, this.x, this.y-21, 41, 41);
 
       if (this.label) {
         ctx.font = this.label.font;
         ctx.fillStyle = this.label.fill;
         ctx.strokeStyle = this.label.stroke;
         ctx.lineWidth = 0.5;
-        ctx.fillText(this.label.text,   this.label.x, this.label.y);
-        ctx.strokeText(this.label.text, this.label.x, this.label.y);
+        ctx.fillText(this.label.text,   this.label.x, this.label.y - 50);
+        ctx.strokeText(this.label.text, this.label.x, this.label.y - 50);
       }
     }
 
@@ -664,8 +713,8 @@ Breakout = {
 
     reset: function() {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
-      this.w      = this.cfg.width  * this.game.court.chunk;
-      this.h      = 18; //this.cfg.height * this.game.court.chunk;
+      this.w      = 190; //this.cfg.width  * this.game.court.chunk;
+      this.h      = 18;  //this.cfg.height * this.game.court.chunk;
       this.r      = 2;
       this.minX   = this.game.court.left;
       this.maxX   = this.game.court.right - this.w;
@@ -710,13 +759,16 @@ Breakout = {
 
       if (undefined === this.color) {
         if (true === game.filter) {
-          gradient.addColorStop(0, 'rgb(206,203,201)');
-          gradient.addColorStop(0.6, 'rgb(141,101,44)');
-          gradient.addColorStop(1, 'rgb(255,254,254)');
+          gradient.addColorStop(0, 'rgb(190,190,190)');
+          gradient.addColorStop(0.3, 'rgb(140,140,140)');
+          gradient.addColorStop(0.6, 'rgb(140,140,140)');
+          gradient.addColorStop(1, 'rgb(200,200,200)');
         } else {
-          gradient.addColorStop(0, 'rgb(206,203,201)');
-          gradient.addColorStop(0.6, 'rgb(226,217,218)');
+          gradient.addColorStop(0, 'rgb(207,204,207)');
+          gradient.addColorStop(0.2, 'rgb(191,188,186)');
+          gradient.addColorStop(0.75, 'rgb(248,246,246)');
           gradient.addColorStop(1, 'rgb(255,254,254)');
+          
         }
         ctx.fillStyle = gradient;
         ctx.strokeStyle = this.game.color.border;
@@ -734,6 +786,7 @@ Breakout = {
         ctx.stroke();
         ctx.closePath();
       } else {
+        /*
         ctx.fillStyle = '#f5a330';
         ctx.strokeStyle = '#f5a330';
         ctx.beginPath();
@@ -741,6 +794,11 @@ Breakout = {
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
+        */
+
+        var imageObj = new Image();
+        imageObj.src = 'images/ballS.png';
+        ctx.drawImage(imageObj, this.w+60, 4, 14, 14);
       }
 
     },

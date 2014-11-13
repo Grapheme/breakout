@@ -6,6 +6,7 @@ html, body {
   width: 100%;
   height: 768px;
   overflow: hidden;
+  font: 21px 'ds-digitalbold', arial, sans-serif;
 }
 
 body {
@@ -79,7 +80,7 @@ body {
  font-weight: 300;
   */
     position: absolute;
-    top: 60%;
+    top: 55%;
     left: 495px;
     margin-left: -105px;
 }
@@ -158,33 +159,42 @@ body {
   padding-left: 32px;
 }
 #switcher, #switcher2 {
-  color: #c0c0c0;
+  color: #c0c0c0 !important;
   font: 21px 'ds-digitalbold', Arial, sans-serif;
   position: absolute;
   top: 16px;
-  left: 645px;  
+  /*left: 645px;  */
+  left: 815px;
   list-style: none;
   margin: 0; padding: 0;
 }
 #switcher2 {
-  left: 845px;
+  /* left: 845px; */
+  left: 915px;
 }
 #switcher li, #switcher2 li {
   display: inline-block;
   margin-right: 10px;
 }
 #switcher li.active, #switcher2 li.active {
+  color: #fff !important;
+}
+#switcher li a, #switcher2 li a {
+  color: #c0c0c0;
+  text-decoration: none;
+}
+#switcher li.active a, #switcher2 li.active a {
   color: #fff;
 }
 
-#btn_speed {
-  width: 150px;
-  height: 151px;
-  position: absolute;
-  top: 570px;
-  left: 50px;
-  z-index: 99999;
 
+#btn_speed {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 550px;
+  left: 20px;
+  z-index: 99;
 }
 
 #btn_speed img {
@@ -192,13 +202,13 @@ body {
 }
 
 #gps_ring {
-    border: 4px solid #999;
+    border: 4px solid #fff;
     -webkit-border-radius: 300px;
-    height: 151px;
-    width: 150px;
+    height: 202px;
+    width: 202px;
     position: absolute;
-    left:45px;
-    top:565px;
+    left:15px;
+    top:545px;
     -webkit-animation: pulsate 1s ease-out;
     -webkit-animation-iteration-count: infinite; 
     opacity: 0.0
@@ -208,6 +218,7 @@ body {
     50% {opacity: 1.0;}
     100% {-webkit-transform: scale(1, 1); opacity: 0.0;}
 }
+
 #crown {
   background: url('images/crown.png') 0 0 no-repeat;
   position: absolute;
@@ -216,3 +227,43 @@ body {
   width: 28px;
   height: 15px;
 }
+
+#gameover_1, #gameover_2, #gameover_3, #night {
+  z-index: 101;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; 
+  background: url('images/paving.jpg');
+  background-size: cover;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font: 48px UnicumCondLight, arial, sans-serif;
+  padding-top: 250px;
+}
+
+#gameover_1 img, #gameover_2 img, #gameover_3 img {
+  display: inline-block;
+  margin-top: 70px;
+}
+
+#night {
+  padding-top: 60px;
+}
+
+#refresh {
+  position: absolute;
+  top: 0;
+  left: 984px;
+  text-align: center;
+  height: 35px;
+  padding-top: 16px;
+  width: 40px;
+  z-index: 100;
+  cursor: pointer;
+}
+
+
