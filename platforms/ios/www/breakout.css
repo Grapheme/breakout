@@ -152,6 +152,7 @@ body {
 #counter {
   background: url('images/clock.png') 0 1px no-repeat;
   color: #fff;
+<<<<<<< HEAD
   font: 21px 'ds-digitalbold', Arial, sans-serif;
   position: absolute;
   top: 17px;
@@ -185,6 +186,31 @@ body {
 }
 #switcher li.active a, #switcher2 li.active a {
   color: #fff;
+=======
+  font: 18px 'Open Sans', Arial, sans-serif;
+  position: absolute;
+  top: 14px;
+  left: 250px;
+>>>>>>> 05810090e15050dd72c950e1b2aa6cc4c7442bb0
+}
+#switcher, #switcher2 {
+  color: #c0c0c0;
+  font: 18px 'Open Sans', Arial, sans-serif;
+  position: absolute;
+  top: 14px;
+  left: 660px;  
+  list-style: none;
+  margin: 0; padding: 0;
+}
+#switcher2 {
+  left: 860px;
+}
+#switcher li, #switcher2 li {
+  display: inline-block;
+  margin-right: 10px;
+}
+#switcher li.active, #switcher2 li.active {
+  color: #fff;
 }
 
 
@@ -202,13 +228,22 @@ body {
 }
 
 #gps_ring {
+<<<<<<< HEAD
     border: 4px solid #fff;
+=======
+    border: 4px solid #999;
+>>>>>>> 05810090e15050dd72c950e1b2aa6cc4c7442bb0
     -webkit-border-radius: 300px;
     height: 202px;
     width: 202px;
     position: absolute;
+<<<<<<< HEAD
     left:15px;
     top:545px;
+=======
+    left:45px;
+    top:565px;
+>>>>>>> 05810090e15050dd72c950e1b2aa6cc4c7442bb0
     -webkit-animation: pulsate 1s ease-out;
     -webkit-animation-iteration-count: infinite; 
     opacity: 0.0

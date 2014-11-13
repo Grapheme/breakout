@@ -175,6 +175,7 @@ Breakout = {
     $('btn_speed').hide();
     $('gps_ring').hide();
     $('counter').innerText = 60;
+<<<<<<< HEAD
     clearInterval(window.interval_);
     if (this.score.score > 5000 || this.win_) {
       $('gameover_3').show();
@@ -192,6 +193,8 @@ Breakout = {
     setTimeout(function() { $('night').hide(); }, 10000);    
     window.counter = 60;
     this.win_ = false;
+=======
+>>>>>>> 05810090e15050dd72c950e1b2aa6cc4c7442bb0
   },
 
   onleavegame: function() {
@@ -263,8 +266,12 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
+<<<<<<< HEAD
   restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
   restart:      function()      { this.lose(); },
+=======
+  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; $('btn_speed').hide(); $('gps_ring').hide(); },
+>>>>>>> 05810090e15050dd72c950e1b2aa6cc4c7442bb0
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
     ctx.fillStyle    = this.color.foreground;
