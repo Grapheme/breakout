@@ -129,10 +129,29 @@ body {
 }
 #counter {
   color: #fff;
-  font: bold 28px 'Open Sans', Arial, sans-serif;
+  font: 18px 'Open Sans', Arial, sans-serif;
   position: absolute;
-  top: 8px;
+  top: 14px;
   left: 250px;
+}
+#switcher, #switcher2 {
+  color: #c0c0c0;
+  font: 18px 'Open Sans', Arial, sans-serif;
+  position: absolute;
+  top: 14px;
+  left: 660px;  
+  list-style: none;
+  margin: 0; padding: 0;
+}
+#switcher2 {
+  left: 860px;
+}
+#switcher li, #switcher2 li {
+  display: inline-block;
+  margin-right: 10px;
+}
+#switcher li.active, #switcher2 li.active {
+  color: #fff;
 }
 
 #btn_speed {
@@ -149,14 +168,14 @@ body {
   max-width: 100%;
 }
 
-.gps_ring {
+#gps_ring {
     border: 4px solid #999;
     -webkit-border-radius: 300px;
     height: 151px;
     width: 150px;
     position: absolute;
     left:45px;
-    top:570px;
+    top:565px;
     -webkit-animation: pulsate 1s ease-out;
     -webkit-animation-iteration-count: infinite; 
     opacity: 0.0
