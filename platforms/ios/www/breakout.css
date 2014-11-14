@@ -192,7 +192,7 @@ body {
   width: 200px;
   height: 200px;
   position: absolute;
-  top: 350px;
+  top: 550px;
   left: 20px;
   z-index: 99;
 }
@@ -208,7 +208,7 @@ body {
     width: 208px;
     position: absolute;
     left:11px;
-    top:340px;
+    top:540px;
     -webkit-animation: pulsate 1s ease-out;
     -webkit-animation-iteration-count: infinite; 
     opacity: 0.0
