@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>837ADD55-DB20-494C-9F9C-D87B7AD46490</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Crown Balls</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9CE7F0B96086EC7A0E2FE6AF0D74C53A8D3E914E</key>
+		<string>https://github.com/Grapheme/breakout.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/Crown Balls.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9CE7F0B96086EC7A0E2FE6AF0D74C53A8D3E914E</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Grapheme/breakout.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9CE7F0B96086EC7A0E2FE6AF0D74C53A8D3E914E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9CE7F0B96086EC7A0E2FE6AF0D74C53A8D3E914E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>breakout</string>
+		</dict>
+	</array>
+</dict>
+</plist>
