@@ -1,0 +1,269 @@
+/*******************************/
+/* global document body styles */
+/*******************************/
+
+html, body {
+  width: 100%;
+  height: 768px;
+  overflow: hidden;
+  font: 21px 'ds-digitalbold', arial, sans-serif;
+}
+
+body {
+        font: 12pt Arial, Helvetica, sans-serif;
+     padding: 0;
+      margin: 0;
+    background: url(images/paving.jpg);
+    background-size: cover;
+}
+
+@font-face {
+  font-family: 'UnicumCondLight';
+  src: url('fonts/UnicumCondLight.eot?#iefix') format('embedded-opentype'),  url('fonts/UnicumCondLight.otf')  format('opentype'),
+       url('fonts/UnicumCondLight.woff') format('woff'), url('fonts/UnicumCondLight.ttf')  format('truetype'), url('fonts/UnicumCondLight.svg#UnicumCondLight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'ds-digitalbold';
+    src: url('fonts/ds-digib-webfont.eot');
+    src: url('fonts/ds-digib-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/ds-digib-webfont.woff2') format('woff2'),
+         url('fonts/ds-digib-webfont.woff') format('woff'),
+         url('fonts/ds-digib-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+/**************************/
+/* unique id-based styles */
+/**************************/
+
+#breakout {
+  position: relative;
+}
+
+#canvas {
+  -webkit-transform: translateZ(0); /* force hardware acceleration in chrome */
+}
+
+#levels {
+     position: absolute;
+         left: 10px;
+          top: 10px;
+        color: #666;
+  line-height: 20px;
+}
+
+#levels #next  { position: absolute;            }
+#levels #prev  { position: absolute; top: 14px; }
+#levels #label { padding-left: 20px; }
+#levels #level { font-size: 14pt; padding-left: 5px; font-weight: bold; color: black; }
+
+#levels img                 { cursor: pointer; }
+#levels img.disabled        { opacity: 0.3; cursor: default; }
+#levels img:active          { margin-top: 1px; margin-left: 1px; }
+#levels img.disabled:active { margin-top: 0; margin-left: 0; }
+
+#instructions {
+  /*
+  background: rgba(0, 0, 0, .5);
+      border: 2px solid #333;
+       color: #fff;
+     padding: 0.5em 1em;
+ white-space: nowrap;
+  text-align: center;
+       width: 18em;
+ font-weight: 300;
+  */
+    position: absolute;
+    top: 55%;
+    left: 495px;
+    margin-left: -105px;
+}
+#instructions b { color: #fff; text-decoration: underline; }
+
+#instructions       .keyboard { display: block; }
+#instructions       .touch    { display: none;  }
+#instructions.touch .keyboard { display: none;  }
+#instructions.touch .touch    { display: block; }
+
+#controls {
+  position: absolute;
+    bottom: 0.5em;
+      left: 0.5em;
+}
+#controls input,
+#controls label { vertical-align: middle; }
+
+/********************************/
+/* re-usable class-based styles */
+/********************************/
+
+.unsupported {
+            border: 1px solid yellow;
+             color: black;
+  background-color: #FFFFAD;
+           padding: 2em;
+            margin: 5em;
+           display: inline-block;
+}
+
+/*****************************/
+/* @media query based layout */
+/*****************************/
+
+@media screen and (min-width: 0px) {
+  #breakout     { display: block; width: 100%; height: 100%; }
+  #canvas       { display: block; width: 100%; height: 100%; }
+  #instructions { font-size: 8pt; }
+}
+
+@media screen and (min-width: 1200px) {
+  #breakout     { width: 100%; height: 100%; }
+  #canvas       { width: 100%; height: 100%; }
+  #instructions { font-size: 10pt; }
+}
+
+@media screen and (min-width: 1600px) {
+  #breakout     { width: 100%; height: 100%; }
+  #canvas       { width: 100%; height: 100%; }
+  #instructions { font-size: 11pt; }
+}
+
+
+#controls, #levels { opacity: 0; }
+
+#instructions {
+  border: 0 none;
+  background: none;
+  width: 211px;
+  height: 79px;
+}
+.keyboard, .touch {
+  background: url('images/btn_start.png') no-repeat;
+  width: 211px;
+  height: 79px;
+  border: none;
+}
+#counter {
+  background: url('images/clock.png') 0 1px no-repeat;
+  color: #fff;
+  font: 21px 'ds-digitalbold', Arial, sans-serif;
+  position: absolute;
+  top: 17px;
+  left: 285px;
+  padding-left: 32px;
+}
+#switcher, #switcher2 {
+  color: #c0c0c0 !important;
+  font: 21px 'ds-digitalbold', Arial, sans-serif;
+  position: absolute;
+  top: 16px;
+  /*left: 645px;  */
+  left: 815px;
+  list-style: none;
+  margin: 0; padding: 0;
+}
+#switcher2 {
+  /* left: 845px; */
+  left: 915px;
+}
+#switcher li, #switcher2 li {
+  display: inline-block;
+  margin-right: 10px;
+}
+#switcher li.active, #switcher2 li.active {
+  color: #fff !important;
+}
+#switcher li a, #switcher2 li a {
+  color: #c0c0c0;
+  text-decoration: none;
+}
+#switcher li.active a, #switcher2 li.active a {
+  color: #fff;
+}
+
+
+#btn_speed {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 550px;
+  left: 20px;
+  z-index: 99;
+}
+
+#btn_speed img {
+  max-width: 100%;
+}
+
+#gps_ring {
+    border: 5px solid #999;
+    -webkit-border-radius: 300px;
+    height: 208px;
+    width: 208px;
+    position: absolute;
+    left:11px;
+    top:540px;
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    opacity: 0.0
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.7, 0.7); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1, 1); opacity: 0.0;}
+}
+
+#crown {
+  background: url('images/crown.png') 0 0 no-repeat;
+  position: absolute;
+  top: 19px;
+  left: 12px;
+  width: 28px;
+  height: 15px;
+}
+
+#gameover_1, #gameover_2, #gameover_3, #night {
+  z-index: 101;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; 
+  background: url('images/paving.jpg');
+  background-size: cover;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font: 48px UnicumCondLight, arial, sans-serif;
+  padding-top: 250px;
+}
+
+#gameover_1 img, #gameover_2 img, #gameover_3 img {
+  display: inline-block;
+  margin-top: 70px;
+}
+
+#night {
+  padding-top: 60px;
+}
+
+#refresh {
+  position: absolute;
+  top: 0;
+  left: 984px;
+  text-align: center;
+  height: 35px;
+  padding-top: 16px;
+  width: 40px;
+  z-index: 100;
+  cursor: pointer;
+}
+
+
