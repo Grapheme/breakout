@@ -19,9 +19,9 @@
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
-    <name>Crown Balls</name>
+    <name>Crown Ball</name>
     <description>
-        Crown Balls
+        Crown Ball
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
         PhoneGap Team
