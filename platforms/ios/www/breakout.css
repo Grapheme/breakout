@@ -204,11 +204,11 @@ body {
 #gps_ring {
     border: 5px solid #999;
     -webkit-border-radius: 300px;
-    height: 208px;
-    width: 208px;
+    height: 215px;
+    width: 215px;
     position: absolute;
-    left:11px;
-    top:540px;
+    left:8px;
+    top:537px;
     -webkit-animation: pulsate 1s ease-out;
     -webkit-animation-iteration-count: infinite; 
     opacity: 0.0

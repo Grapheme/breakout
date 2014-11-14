@@ -364,7 +364,7 @@ Breakout = {
       ctx.fillText(text, 50, this.height/2);
 
       ctx.fillStyle = ishigh ? this.game.color.score : this.game.color.highscore;
-      text          = "HIGH SCORE: " + this.format(ishigh ? this.score : this.highscore);
+      text          = ""; //"HIGH SCORE: " + this.format(ishigh ? this.score : this.highscore);
       ctx.font      = this.highfont;
       width         = ctx.measureText(text).width;
       ctx.fillText(text, this.width - width, this.height/2);
