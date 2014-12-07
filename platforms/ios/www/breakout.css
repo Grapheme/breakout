@@ -188,16 +188,16 @@ body {
 }
 
 
-#btn_speed {
-  width: 200px;
-  height: 200px;
+#btn_speed, #btn_smoke, #btn_smell {
+  width: 210px;
+  height: 210px;
   position: absolute;
   top: 550px;
   left: 20px;
   z-index: 99;
 }
 
-#btn_speed img {
+#btn_speed img, #btn_smoke img, #btn_smell img {
   max-width: 100%;
 }
 
@@ -265,5 +265,44 @@ body {
   z-index: 100;
   cursor: pointer;
 }
+
+#clouds,
+#clouds-1,
+#clouds-2,
+#clouds-3,
+#clouds-4,
+#clouds-5 {
+  background-image: url('images/cloud_4.png') ;
+  background-size: cover;
+  background-repeat: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 90;
+  opacity: 0;
+  -webkit-transition: opacity 3s ease-out;
+}
+
+#clouds.active,
+#clouds-1.active,
+#clouds-2.active,
+#clouds-3.active,
+#clouds-4.active,
+#clouds-5.active {
+  opacity: 1;
+}
+
+#clouds-1 { background-image: url('images/cloud_1.png'); }
+#clouds-2 { background-image: url('images/cloud_2.png'); }
+#clouds-3 { background-image: url('images/cloud_3.png'); }
+#clouds-4 { background-image: url('images/cloud_4.png'); }
+#clouds-5 { background-image: url('images/cloud_5.png'); }
+
+
+
+
+
 
 

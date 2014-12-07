@@ -23,10 +23,10 @@ Breakout = {
 
     ball: {
       radius:  0.7,
-      speed:   15,
+      speed:   5,
       labels: {
-        4: { text: 'ЦЕЛЬ 5000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
-        3: { text: 'ЦЕЛЬ 5000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
+        4: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
+        3: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         2: { text: '2', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
         1: { text: '1', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' }
       }
@@ -88,6 +88,8 @@ Breakout = {
     /*this.width   = runner.width;
     this.height  = runner.height;*/
     this.filter  = false;
+    this.smoke   = false;
+    this.crush   = false;
     this.win_    = false;
     this.width   = 1024;
     this.height  = 768;
@@ -115,6 +117,10 @@ Breakout = {
     
     Game.addEvent('btn_speed',        'click', this.restoreSpeed.bind(this));
     Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
+    Game.addEvent('btn_smoke',        'click', this.restoreSmoke.bind(this));
+    Game.addEvent('btn_smoke',        'touchstart', this.restoreSmoke.bind(this));
+    Game.addEvent('btn_smell',        'click', this.restoreSmell.bind(this));
+    Game.addEvent('btn_smell',        'touchstart', this.restoreSmell.bind(this));
     Game.addEvent('refresh',          'click', this.restart.bind(this));
     Game.addEvent('refresh',          'touchstart', this.restart.bind(this));
 
@@ -172,15 +178,33 @@ Breakout = {
 
   onlose: function() {
     this.playSound('gameover');
+    
     this.filter = false;
+    this.smoke = false;
+    this.crush = false;
+
+    this.paddle.w = 250;
+
     $('btn_speed').hide();
+    $('btn_smoke').hide();
+    $('btn_smell').hide();
     $('gps_ring').hide();
+    $('clouds_1').removeClassName('active');
+    $('clouds_2').removeClassName('active');
+    $('clouds_3').removeClassName('active');
+    $('clouds_4').removeClassName('active');
+    $('clouds_5').removeClassName('active');
+
     $('counter').innerText = 60;
     clearInterval(window.interval_);
-    if (this.score.score > 5000 || this.win_) {
+    clearInterval(window.crint);
+
+    if (this.score.score > 10000 || this.win_) {
+      $('total-score').innerText = this.score.score;
       $('gameover_3').show();
       setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
     } else if (this.court.empty()) {
+      $('total-score').innerText = this.score.score;
       $('gameover_3').show();
       setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
     } else if (window.counter == 60) {
@@ -222,12 +246,44 @@ Breakout = {
 
   hitBrick: function(brick) {
     window.console.log(brick.c);
+    var ps_ = getRandomInt(1,3);
+    window.console.log('info: '+ps_);
     if (brick.c === 'k' || brick.c === 'K') {
-        //this.ball.speed = 50;
-        //$('btn_speed').show();
-        this.filter = true;
+      if (false === this.filter && false === this.smoke && false === this.crush) {
+        switch (ps_) {
+           case 1:
+              window.console.log('Filter');
+              this.filter = true;
+              break;
+           case 2:
+              window.console.log('Smoke');
+              this.smoke = true;
+              $('clouds_1').addClassName('active');
+              $('clouds_2').addClassName('active');
+              $('clouds_3').addClassName('active');
+              $('clouds_4').addClassName('active');
+              $('clouds_5').addClassName('active');
+              $('btn_smoke').show();
+              $('gps_ring').show();
+              break;
+           case 3:
+              window.console.log('Crush');
+              this.crush = true;
+              $('btn_smell').show();
+              $('gps_ring').show();
+              crint = setInterval(function(){
+                if ( game.paddle.w > 30 ) {
+                  game.paddle.w = game.paddle.w - 1;
+                  game.paddle.rerender = true;
+                } else {
+                  clearInterval(crint);
+                }
+              }, 100);
+              break;
+        }
         this.paddle.rerender = true;
         this.court.remove(brick);
+      }
     }
 
     if (this.filter === false) {
@@ -237,7 +293,7 @@ Breakout = {
             this.score.increase(brick.score);
         }
         this.court.remove(brick);
-        this.ball.speed += 30 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
+        this.ball.speed += 50 * (1 - (this.ball.speed / this.ball.maxspeed)); // decay curve - speed increases less the faster the ball is (otherwise game becomes impossible)
     }
     
     this.playSound('brick');
@@ -265,6 +321,8 @@ Breakout = {
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
   restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
+  restoreSmoke: function()      { this.smoke = false; $('btn_smoke').hide(); $('gps_ring').hide(); $('clouds_1').removeClassName('active'); $('clouds_2').removeClassName('active'); $('clouds_3').removeClassName('active'); $('clouds_4').removeClassName('active'); $('clouds_5').removeClassName('active'); },
+  restoreSmell: function()      { this.crush = false; $('btn_smell').hide(); $('gps_ring').hide(); clearInterval(crint); this.paddle.w = 250; this.paddle.rerender = true; },
   restart:      function()      { this.lose(); },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
@@ -316,10 +374,23 @@ Breakout = {
     resetLives: function()  { this.setLives(this.cfg.lives.initial);                       }, 
     setLives:   function(n) { this.lives = n; this.rerender = true;                        },
     gainLife:   function()  { this.setLives(Math.min(this.cfg.lives.max, this.lives + 1)); },
-    loseLife:   function()  { this.game.filter = false; this.game.paddle.rerender = true; this.setLives(this.lives-1); return (this.lives == 0);  },
+    loseLife:   function()  { 
+      if (true === this.game.crush) {
+        clearInterval(window.crint); 
+        this.game.crush = false;
+        this.game.paddle.w = 250; 
+        $('btn_smell').hide(); 
+        $('gps_ring').hide();
+      }
+      this.game.filter = false; 
+      this.game.smoke = false; 
+      this.game.paddle.rerender = true; 
+      this.setLives(this.lives-1); 
+      return (this.lives == 0);  
+    },
  
     update: function(dt) {
-      //if (this.score > 5000) {
+      //if (this.score > 10000) {
       //  this.game.lose();
       //}
       if (this.vscore < this.score) {
@@ -364,7 +435,7 @@ Breakout = {
       ctx.fillText(text, 50, this.height/2);
 
       ctx.fillStyle = ishigh ? this.game.color.score : this.game.color.highscore;
-      text          = "HIGH SCORE: " + this.format(ishigh ? this.score : this.highscore);
+      text          = ""; //"HIGH SCORE: " + this.format(ishigh ? this.score : this.highscore);
       ctx.font      = this.highfont;
       width         = ctx.measureText(text).width;
       ctx.fillText(text, this.width - width, this.height/2);
@@ -486,9 +557,31 @@ Breakout = {
             imageObj.src = 'images/brick_bad.png';
             ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
           } else {
-            imageObj.src = 'images/brick_normal.png';
-            ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
+            imageObj.src = 'images/brick_w.png';
+            ctx.drawImage(imageObj, 79, 78, 80, 40, brick.x, brick.y, brick.w, brick.h);
           }
+        } else if (brick.animate < 6) {
+          var imageObj = new Image();
+          if (brick.c === 'l' || brick.c === 'L') {
+            imageObj.src = 'images/brick_good.png';
+            ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
+          } else if (brick.c === 'k' || brick.c === 'K') {
+            imageObj.src = 'images/brick_bad.png';
+            ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
+          } else {
+            imageObj.src = 'images/brick_w.png';
+            if (brick.animate === 0) { ctx.drawImage(imageObj, 79, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
+            if (brick.animate === 1) { ctx.drawImage(imageObj, 210, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
+            if (brick.animate === 2) { ctx.drawImage(imageObj, 342, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
+            if (brick.animate === 3) { ctx.drawImage(imageObj, 472, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
+            if (brick.animate === 4) { ctx.drawImage(imageObj, 603, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
+            if (brick.animate === 5) { ctx.drawImage(imageObj, 734, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
+          }
+          brick.animate = brick.animate + 1;
+          console.log(game.court.rerender);
+          game.court.rerender = true;
+          //game.court.draw();
+          console.log(game.court.rerender);
         }
       }
 
@@ -504,6 +597,7 @@ Breakout = {
 
     remove: function(brick) {
       //console.log('HIT');
+      brick.animate = 1;
       brick.hit = true;
       this.numhits++;
       this.rerender = true;
@@ -714,9 +808,9 @@ Breakout = {
 
     reset: function() {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
-      this.w      = 190; //this.cfg.width  * this.game.court.chunk;
-      this.h      = 18;  //this.cfg.height * this.game.court.chunk;
-      this.r      = 2;
+      this.w      = 250; //this.cfg.width  * this.game.court.chunk;
+      this.h      = 30;  //this.cfg.height * this.game.court.chunk;
+      this.r      = 5;
       this.minX   = this.game.court.left;
       this.maxX   = this.game.court.right - this.w;
       this.setpos(Game.random(this.minX, this.maxX), this.game.court.bottom - this.h);
@@ -771,6 +865,7 @@ Breakout = {
           gradient.addColorStop(1, 'rgb(255,254,254)');
           
         }
+
         ctx.fillStyle = gradient;
         ctx.strokeStyle = this.game.color.border;
         ctx.beginPath();

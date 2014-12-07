@@ -20,7 +20,7 @@
     -->
   </ul>
   <ul id="switcher2">
-    <li class="active">5000</li>
+    <li class="active">10000</li>
     <!--
     <li>7000</li>
     <li>10000</li>
@@ -29,8 +29,19 @@
   <a id="btn_speed" href="#">
     <img src="images/btn_speed.png" /> 
   </a>
+  <a id="btn_smoke" href="#">
+    <img src="images/btn_smoke.png" /> 
+  </a>
+  <a id="btn_smell" href="#">
+    <img src="images/btn_smell.png" /> 
+  </a>
   <div id="gps_ring"></div>
   <div id="crown"></div>
+  <div id="clouds_1"></div>
+  <div id="clouds_2"></div>
+  <div id="clouds_3"></div>
+  <div id="clouds_4"></div>
+  <div id="clouds_5"></div>
 
   <div id="breakout">
     <canvas id="canvas">
@@ -75,6 +86,7 @@
   </div>
   <div id="gameover_3">
     У тебя отлично получилось! <br/>
+    Ты набрал <span id="total-score">0</span> очков<br/>
     <img src="images/crownL.png" alt="" />
   </div>
   <div id="night">
@@ -83,7 +95,8 @@
   </div>
   <script>
   var game,
-      interval_;
+      interval_,
+      crint;
   var counter = 60;
 
   function ballInterval() {
@@ -105,6 +118,10 @@
       }
     }
   }
+
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   </script>  
   <script src="game.js"></script>
   <script src="breakout.js"></script>
@@ -113,6 +130,8 @@
   Game.ready(function() {
     game = Game.start('canvas', Breakout);
     $('btn_speed').hide();
+    $('btn_smoke').hide();
+    $('btn_smell').hide();
     $('gps_ring').hide();
     $('gameover_1').hide();
     $('gameover_2').hide();
