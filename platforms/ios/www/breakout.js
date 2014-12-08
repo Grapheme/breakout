@@ -23,7 +23,7 @@ Breakout = {
 
     ball: {
       radius:  0.7,
-      speed:   5,
+      speed:   25,
       labels: {
         4: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         3: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
@@ -183,7 +183,7 @@ Breakout = {
     this.smoke = false;
     this.crush = false;
 
-    this.paddle.w = 250;
+    this.paddle.w = 270;
 
     $('btn_speed').hide();
     $('btn_smoke').hide();
@@ -259,10 +259,10 @@ Breakout = {
               window.console.log('Smoke');
               this.smoke = true;
               $('clouds_1').addClassName('active');
-              $('clouds_2').addClassName('active');
-              $('clouds_3').addClassName('active');
-              $('clouds_4').addClassName('active');
-              $('clouds_5').addClassName('active');
+              setTimeout(function() { if (game.smoke) { $('clouds_2').addClassName('active'); }}, 1000);
+              setTimeout(function() { if (game.smoke) { $('clouds_3').addClassName('active'); }}, 2000);
+              setTimeout(function() { if (game.smoke) { $('clouds_4').addClassName('active'); }}, 3000);
+              setTimeout(function() { if (game.smoke) { $('clouds_5').addClassName('active'); }}, 4000);
               $('btn_smoke').show();
               $('gps_ring').show();
               break;
@@ -273,7 +273,7 @@ Breakout = {
               $('gps_ring').show();
               crint = setInterval(function(){
                 if ( game.paddle.w > 30 ) {
-                  game.paddle.w = game.paddle.w - 1;
+                  game.paddle.w = game.paddle.w - 2;
                   game.paddle.rerender = true;
                 } else {
                   clearInterval(crint);
@@ -286,7 +286,7 @@ Breakout = {
       }
     }
 
-    if (this.filter === false) {
+    if (false === this.filter && false === this.smoke && false === this.crush) {
         if (brick.c === 'l' || brick.c === 'L') {
             this.score.increase(brick.score * 15);
         } else {
@@ -320,9 +320,9 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
-  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 350; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
+  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 450; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
   restoreSmoke: function()      { this.smoke = false; $('btn_smoke').hide(); $('gps_ring').hide(); $('clouds_1').removeClassName('active'); $('clouds_2').removeClassName('active'); $('clouds_3').removeClassName('active'); $('clouds_4').removeClassName('active'); $('clouds_5').removeClassName('active'); },
-  restoreSmell: function()      { this.crush = false; $('btn_smell').hide(); $('gps_ring').hide(); clearInterval(crint); this.paddle.w = 250; this.paddle.rerender = true; },
+  restoreSmell: function()      { this.crush = false; $('btn_smell').hide(); $('gps_ring').hide(); clearInterval(crint); this.paddle.w = 270; this.paddle.rerender = true; },
   restart:      function()      { this.lose(); },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
@@ -378,7 +378,7 @@ Breakout = {
       if (true === this.game.crush) {
         clearInterval(window.crint); 
         this.game.crush = false;
-        this.game.paddle.w = 250; 
+        this.game.paddle.w = 270; 
         $('btn_smell').hide(); 
         $('gps_ring').hide();
       }
@@ -557,31 +557,9 @@ Breakout = {
             imageObj.src = 'images/brick_bad.png';
             ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
           } else {
-            imageObj.src = 'images/brick_w.png';
-            ctx.drawImage(imageObj, 79, 78, 80, 40, brick.x, brick.y, brick.w, brick.h);
-          }
-        } else if (brick.animate < 6) {
-          var imageObj = new Image();
-          if (brick.c === 'l' || brick.c === 'L') {
-            imageObj.src = 'images/brick_good.png';
+            imageObj.src = 'images/brick_normal.png';
             ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
-          } else if (brick.c === 'k' || brick.c === 'K') {
-            imageObj.src = 'images/brick_bad.png';
-            ctx.drawImage(imageObj, brick.x, brick.y, brick.w, brick.h);
-          } else {
-            imageObj.src = 'images/brick_w.png';
-            if (brick.animate === 0) { ctx.drawImage(imageObj, 79, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
-            if (brick.animate === 1) { ctx.drawImage(imageObj, 210, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
-            if (brick.animate === 2) { ctx.drawImage(imageObj, 342, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
-            if (brick.animate === 3) { ctx.drawImage(imageObj, 472, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
-            if (brick.animate === 4) { ctx.drawImage(imageObj, 603, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
-            if (brick.animate === 5) { ctx.drawImage(imageObj, 734, 78, 80, 40, brick.x, brick.y, brick.w, brick.h); }
           }
-          brick.animate = brick.animate + 1;
-          console.log(game.court.rerender);
-          game.court.rerender = true;
-          //game.court.draw();
-          console.log(game.court.rerender);
         }
       }
 
@@ -601,6 +579,11 @@ Breakout = {
       brick.hit = true;
       this.numhits++;
       this.rerender = true;
+      console.log(brick.top+" "+brick.left);
+      $('brick').style.top = brick.top+'px';
+      $('brick').style.left = brick.left+'px';
+      brickCount = 0;
+      animateBrick();
     },
 
     empty: function() {
@@ -808,7 +791,7 @@ Breakout = {
 
     reset: function() {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
-      this.w      = 250; //this.cfg.width  * this.game.court.chunk;
+      this.w      = 270; //this.cfg.width  * this.game.court.chunk;
       this.h      = 30;  //this.cfg.height * this.game.court.chunk;
       this.r      = 5;
       this.minX   = this.game.court.left;

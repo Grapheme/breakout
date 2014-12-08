@@ -300,6 +300,17 @@ body {
 #clouds-4 { background-image: url('images/cloud_4.png'); }
 #clouds-5 { background-image: url('images/cloud_5.png'); }
 
+#brick {
+  background-image: url('images/brick_w.png');
+  background-position: -79px -78px;
+  display: block;
+  width: 81px;
+  height: 40px;
+  z-index: 200;
+  position: absolute;
+  top: 0px;
+  left: 0px;  
+}
 
 
 
