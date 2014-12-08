@@ -245,9 +245,6 @@ Breakout = {
   },
 
   hitBrick: function(brick) {
-    window.console.log(brick.c);
-    var ps_ = getRandomInt(1,3);
-    window.console.log('info: '+ps_);
     if (brick.c === 'k' || brick.c === 'K') {
       if (false === this.filter && false === this.smoke && false === this.crush) {
         switch (ps_) {
@@ -281,6 +278,7 @@ Breakout = {
               }, 100);
               break;
         }
+        if (ps_ < 3) { ps_++; } else { ps_ = 1; }
         this.paddle.rerender = true;
         this.court.remove(brick);
       }
