@@ -25,8 +25,7 @@ Breakout = {
       radius:  0.7,
       speed:   25,
       labels: {
-        4: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
-        3: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
+        3: { text: 'ЦЕЛЬ '+result_+' БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         2: { text: '2', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
         1: { text: '1', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' }
       }
@@ -189,17 +188,17 @@ Breakout = {
     $('btn_smoke').hide();
     $('btn_smell').hide();
     $('gps_ring').hide();
-    $('clouds_1').removeClassName('active');
-    $('clouds_2').removeClassName('active');
-    $('clouds_3').removeClassName('active');
-    $('clouds_4').removeClassName('active');
-    $('clouds_5').removeClassName('active');
+    $('cl1').removeClassName('active');
+    $('cl2').removeClassName('active');
+    $('cl3').removeClassName('active');
+    $('cl4').removeClassName('active');
+    $('cl5').removeClassName('active');
 
     $('counter').innerText = 60;
     clearInterval(window.interval_);
     clearInterval(window.crint);
 
-    if (this.score.score > 10000 || this.win_) {
+    if (this.score.score > result_ || this.win_) {
       $('total-score').innerText = this.score.score;
       $('gameover_3').show();
       setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
@@ -214,7 +213,7 @@ Breakout = {
       $('gameover_1').show();
       setTimeout(function() { $('gameover_1').hide(); $('night').show(); }, 4000);    
     }    
-    setTimeout(function() { $('night').hide(); }, 10000);    
+    setTimeout(function() { $('night').hide(); $('start-screen').show(); }, 10000);    
     window.counter = 60;
     this.win_ = false;
   },
@@ -245,8 +244,12 @@ Breakout = {
   },
 
   hitBrick: function(brick) {
+    window.console.log(brick.c);
+    //ps_ = getRandomInt(1,3);
+    window.console.log('info: '+ps_);
     if (brick.c === 'k' || brick.c === 'K') {
       if (false === this.filter && false === this.smoke && false === this.crush) {
+        ps_ = ps_ + 1;
         switch (ps_) {
            case 1:
               window.console.log('Filter');
@@ -255,11 +258,11 @@ Breakout = {
            case 2:
               window.console.log('Smoke');
               this.smoke = true;
-              $('clouds_1').addClassName('active');
-              setTimeout(function() { if (game.smoke) { $('clouds_2').addClassName('active'); }}, 1000);
-              setTimeout(function() { if (game.smoke) { $('clouds_3').addClassName('active'); }}, 2000);
-              setTimeout(function() { if (game.smoke) { $('clouds_4').addClassName('active'); }}, 3000);
-              setTimeout(function() { if (game.smoke) { $('clouds_5').addClassName('active'); }}, 4000);
+              $('cl1').addClassName('active');
+              setTimeout(function() { if (game.smoke) { $('cl2').addClassName('active'); }}, 1000);
+              setTimeout(function() { if (game.smoke) { $('cl3').addClassName('active'); }}, 2000);
+              setTimeout(function() { if (game.smoke) { $('cl4').addClassName('active'); }}, 3000);
+              setTimeout(function() { if (game.smoke) { $('cl5').addClassName('active'); }}, 4000);
               $('btn_smoke').show();
               $('gps_ring').show();
               break;
@@ -278,7 +281,7 @@ Breakout = {
               }, 100);
               break;
         }
-        if (ps_ < 3) { ps_++; } else { ps_ = 1; }
+        if (ps_ == 3) { ps_ = 0; }
         this.paddle.rerender = true;
         this.court.remove(brick);
       }
@@ -318,8 +321,8 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
-  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 450; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
-  restoreSmoke: function()      { this.smoke = false; $('btn_smoke').hide(); $('gps_ring').hide(); $('clouds_1').removeClassName('active'); $('clouds_2').removeClassName('active'); $('clouds_3').removeClassName('active'); $('clouds_4').removeClassName('active'); $('clouds_5').removeClassName('active'); },
+  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 650; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
+  restoreSmoke: function()      { this.smoke = false; $('btn_smoke').hide(); $('gps_ring').hide(); $('cl1').removeClassName('active'); $('cl2').removeClassName('active'); $('cl3').removeClassName('active'); $('cl4').removeClassName('active'); $('cl5').removeClassName('active'); },
   restoreSmell: function()      { this.crush = false; $('btn_smell').hide(); $('gps_ring').hide(); clearInterval(crint); this.paddle.w = 270; this.paddle.rerender = true; },
   restart:      function()      { this.lose(); },
 
@@ -388,7 +391,7 @@ Breakout = {
     },
  
     update: function(dt) {
-      //if (this.score > 10000) {
+      //if (this.score > result_) {
       //  this.game.lose();
       //}
       if (this.vscore < this.score) {
@@ -636,8 +639,9 @@ Breakout = {
     },
 
     launch: function() {
+      $('start-screen').hide();
       if (!this.moving || this.countdown) {
-        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 4 : this.countdown - 1;
+        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 3 : this.countdown - 1;
         if (this.countdown > 0) {
           this.label = this.launchLabel(this.countdown);
           this.delayTimer = setTimeout(this.launch.bind(this), 1000);

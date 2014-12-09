@@ -9,23 +9,25 @@
  
 <body> 
 
+  <div id="cl1"> </div>
+  <div id="cl2"> </div>
+  <div id="cl3"> </div>
+  <div id="cl4"> </div>
+  <div id="cl5"> </div>
+
   <div id="counter">60</div>
   <div id="refresh">
     <img src="images/refresh.png" /> 
   </div>
   <ul id="switcher">
     <li class="active">60 sec</li>
-    <!--
-    <li>80 sec</li>
-    -->
   </ul>
   <ul id="switcher2">
     <li class="active">10000</li>
-    <!--
-    <li>7000</li>
-    <li>10000</li>
-    -->
   </ul>
+  <div id="crown"></div>
+  <div id="brick"></div>
+
   <a id="btn_speed" href="#">
     <img src="images/btn_speed.png" /> 
   </a>
@@ -36,13 +38,6 @@
     <img src="images/btn_smell.png" /> 
   </a>
   <div id="gps_ring"></div>
-  <div id="crown"></div>
-  <div id="clouds_1"></div>
-  <div id="clouds_2"></div>
-  <div id="clouds_3"></div>
-  <div id="clouds_4"></div>
-  <div id="clouds_5"></div>
-  <div id="brick"></div>
 
   <div id="breakout">
     <canvas id="canvas">
@@ -77,6 +72,51 @@
     </div>
   </div>
 
+  <div id="start-screen">
+    <h1>Crown Ball</h1>
+    <div class="clearfix">
+      <div class="left">
+        <p class="title">Выбивай блоки, получай баллы</p>
+        <p>
+          <img src="images/brick_normal.png" alt="Normal block" /> + 95 баллов &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+        <p>
+          <img src="images/brick_good.png" alt="Normal block" /> + 1350 баллов за «корону»
+        </p>
+      </div>
+      <div class="right">
+        <p class="title">Избегай серых блоков</p>
+        <p>
+          <img src="images/brick_bad.png" alt="Normal block" /> &ndash; одна из ловушек в игре &nbsp;&nbsp;
+        </p>        
+      </div>
+    </div>
+    <div class="clearfix">
+      <div class="left">
+        <p>
+          <img class="btn__" width="90px" src="images/btn_speed.png" alt="Button 1"> — верни платформе плотность<br/>
+        </p>
+        <p>
+          <img class="btn__" width="90px" src="images/btn_smoke.png" alt="Button 1"> — избавься от дыма<br/>
+        </p>
+        <p>
+          <img class="btn__" width="90px" src="images/btn_smell.png" alt="Button 1"> — останови уменьшение платформы<br/>
+        </p>
+      </div>
+      <div class="right">
+        <p class="title">Количество баллов</p>
+        <p class="radio">
+          <input type="radio" name="group1" value="5000"> 5000 баллов
+        </p>
+        <p class="radio">
+          <input type="radio" name="group1" value="10000" checked> 10 000 баллов
+        </p>
+        <p class="radio">
+          <input type="radio" name="group1" value="15000"> 15 000 баллов
+        </p>        
+      </div>
+    </div>
+  </div>
   <div id="gameover_1">
     Игра окончена. Попробуй позже. <br/>
     <img src="images/crownL.png" alt="" />
@@ -97,9 +137,10 @@
   <script>
   var game,
       interval_,
-      crint;
+      crint, 
+      result_ = 10000;
   var counter = 60;
-  var brickInt, brickCount = 0, ps_ = 1;
+  var brickInt, brickCount = 0, ps_ = 0;
 
   function ballInterval() {
     if (counter > 0) {

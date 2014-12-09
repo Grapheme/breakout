@@ -69,20 +69,11 @@ body {
 #levels img.disabled:active { margin-top: 0; margin-left: 0; }
 
 #instructions {
-  /*
-  background: rgba(0, 0, 0, .5);
-      border: 2px solid #333;
-       color: #fff;
-     padding: 0.5em 1em;
- white-space: nowrap;
-  text-align: center;
-       width: 18em;
- font-weight: 300;
-  */
     position: absolute;
-    top: 55%;
+    top: 650px;
     left: 495px;
     margin-left: -105px;
+    z-index: 111;
 }
 #instructions b { color: #fff; text-decoration: underline; }
 
@@ -229,7 +220,7 @@ body {
 }
 
 #gameover_1, #gameover_2, #gameover_3, #night {
-  z-index: 101;
+  z-index: 112;
   position: fixed;
   top: 0;
   left: 0;
@@ -266,40 +257,6 @@ body {
   cursor: pointer;
 }
 
-#clouds,
-#clouds-1,
-#clouds-2,
-#clouds-3,
-#clouds-4,
-#clouds-5 {
-  background-image: url('images/cloud_4.png') ;
-  background-size: cover;
-  background-repeat: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 90;
-  opacity: 0;
-  -webkit-transition: opacity 3s ease-out;
-}
-
-#clouds.active,
-#clouds-1.active,
-#clouds-2.active,
-#clouds-3.active,
-#clouds-4.active,
-#clouds-5.active {
-  opacity: 1;
-}
-
-#clouds-1 { background-image: url('images/cloud_1.png'); }
-#clouds-2 { background-image: url('images/cloud_2.png'); }
-#clouds-3 { background-image: url('images/cloud_3.png'); }
-#clouds-4 { background-image: url('images/cloud_4.png'); }
-#clouds-5 { background-image: url('images/cloud_5.png'); }
-
 #brick {
   background-image: url('images/brick_w.png');
   background-position: -79px -78px;
@@ -312,8 +269,93 @@ body {
   left: 0px;  
 }
 
+#cl1,
+#cl2,
+#cl3,
+#cl4,
+#cl5 {
+  background-image: url('images/cloud_1.png') ;
+  background-size: cover;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 570px;
+  opacity: 0;
+  -webkit-transition: opacity 3s ease-out;
+}
+
+#cl1.active,
+#cl2.active,
+#cl3.active,
+#cl4.active,
+#cl5.active {
+  opacity: 1;
+}
+
+#cl1 { background-image: url('images/cloud_1.png'); z-index: 1; }
+#cl2 { background-image: url('images/cloud_2.png'); z-index: 2; }
+#cl3 { background-image: url('images/cloud_3.png'); z-index: 3; }
+#cl4 { background-image: url('images/cloud_4.png'); z-index: 4; }
+#cl5 { background-image: url('images/cloud_5.png'); z-index: 5; }
 
 
+#start-screen {
+  z-index: 110;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; 
+  background: url('images/paving.jpg');
+  background-size: cover;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font: 24px UnicumCondLight, arial, sans-serif;
+  padding-top: 10px;  
+}
+#start-screen h1 {
+  font: bold 48px UnicumCondLight, arial, sans-serif;
+  margin: 0.5em 0 0;
+}
+#start-screen p {
+  margin: 0.5em 0;
+}
+#start-screen p.title {
+  margin: 1.5em 0 0.25em;
+  color: #fff;
+  font-weight: bold;
+  font-size: 30px;
+  border-bottom: 1px solid;
+  display: inline-block;
+}
+#start-screen img {
+  position: relative;
+  top: 14px;
+  left: -10px;
+}
+#start-screen p .btn__ {
+  margin-left: -0.5em; 
+  top: 40px;
+}
+#start-screen p.radio {
+  margin: 1em 0;
+}
+#start-screen p.radio input {
+  position: relative;
+  left: -5px;
+  top: -4px;
+}
+
+.clearfix:before,
+.clearfix:after { content: " ";display:table }
+.clearfix:after { clear: both }
+.clearfix { *zoom: 1; margin: 0 auto; width: 800px; text-align: left; }
+
+.left { float: left; }
+.right { float: right; width: 300px; }
 
 
 
