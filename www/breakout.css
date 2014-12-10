@@ -7,6 +7,7 @@ html, body {
   height: 768px;
   overflow: hidden;
   font: 21px 'ds-digitalbold', arial, sans-serif;
+  background-color: #2e90cd;
 }
 
 body {
@@ -73,7 +74,7 @@ body {
     top: 650px;
     left: 495px;
     margin-left: -105px;
-    z-index: 111;
+    z-index: 901;
 }
 #instructions b { color: #fff; text-decoration: underline; }
 
@@ -220,7 +221,7 @@ body {
 }
 
 #gameover_1, #gameover_2, #gameover_3, #night {
-  z-index: 112;
+  z-index: 912;
   position: fixed;
   top: 0;
   left: 0;
@@ -301,20 +302,20 @@ body {
 
 
 #start-screen {
-  z-index: 110;
+  z-index: 900;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%; 
-  background: url('images/paving.jpg');
+  background: url('images/paving.jpg') 0 0 no-repeat #2e90cd;
   background-size: cover;
   color: #fff;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
   font: 24px UnicumCondLight, arial, sans-serif;
-  padding-top: 10px;  
+  padding-top: 10px;
 }
 #start-screen h1 {
   font: bold 48px UnicumCondLight, arial, sans-serif;
@@ -358,4 +359,33 @@ body {
 .right { float: right; width: 300px; }
 
 
+#grow1, #grow2, #grow3, #grow4, #grow5, #grow6,
+#grow7, #grow8, #grow9, #grow10, #grow11, #grow12,
+#grow13, #grow14, #grow15, #grow16, #grow17, #grow18,
+#grow19, #grow20, #grow21, #grow22, #grow23, #grow24,
+#grow25, #grow26, #grow27, #grow28, #grow29, #grow30,
+#grow31, #grow32, #grow33, #grow34, #grow35, #grow36,
+#grow37, #grow38, #grow39, #grow40, #grow41 { 
+  z-index: 205;
+  position: absolute;
+  top: 200px;
+  left: -200px;  
+  color: #fdc911; 
+  font: 18px 'ds-digitalbold', arial, sans-serif;
+  transition: opacity 1s ease-in-out, top 1s ease-in-out; 
+  opacity: 1;
+}
+#grow1.animate, #grow2.animate, #grow3.animate, #grow4.animate, #grow5.animate, #grow6.animate,
+#grow7.animate, #grow8.animate, #grow9.animate, #grow10.animate, #grow11.animate, #grow12.animate,
+#grow13.animate, #grow14.animate, #grow15.animate, #grow16.animate, #grow17.animate, #grow18.animate,
+#grow19.animate, #grow20.animate, #grow21.animate, #grow22.animate, #grow23.animate, #grow24.animate,
+#grow25.animate, #grow26.animate, #grow27.animate, #grow28.animate, #grow29.animate, #grow30.animate,
+#grow31.animate, #grow32.animate, #grow33.animate, #grow34.animate, #grow35.animate, #grow36.animate,
+#grow37.animate, #grow38.animate, #grow39.animate, #grow40.animate, #grow41.animate { 
+  /*transform: scale(0.1); */
+  opacity: 0;
+  top: 100px;
+}
 
+
+#preload { opacity: 0; width: 100%; height: 100%; }

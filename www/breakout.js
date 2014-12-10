@@ -25,7 +25,7 @@ Breakout = {
       radius:  0.7,
       speed:   25,
       labels: {
-        3: { text: 'ЦЕЛЬ '+result_+' БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
+        3: { text: 'ЦЕЛЬ 10 000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         2: { text: '2', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
         1: { text: '1', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' }
       }
@@ -182,7 +182,10 @@ Breakout = {
     this.smoke = false;
     this.crush = false;
 
-    this.paddle.w = 270;
+    for (var i = 1; i <= 41; i++) {
+      $('grow'+i).style.left = '-200px';
+      $('grow'+i).removeClassName('animate');
+    }
 
     $('btn_speed').hide();
     $('btn_smoke').hide();
@@ -213,7 +216,7 @@ Breakout = {
       $('gameover_1').show();
       setTimeout(function() { $('gameover_1').hide(); $('night').show(); }, 4000);    
     }    
-    setTimeout(function() { $('night').hide(); $('start-screen').show(); }, 10000);    
+    setTimeout(function() { /*$('night').hide(); $('start-screen').show();*/ window.location.reload(); }, 10000);    
     window.counter = 60;
     this.win_ = false;
   },
@@ -244,9 +247,9 @@ Breakout = {
   },
 
   hitBrick: function(brick) {
-    window.console.log(brick.c);
+    //window.console.log(brick.c);
     //ps_ = getRandomInt(1,3);
-    window.console.log('info: '+ps_);
+    //window.console.log('info: '+ps_);
     if (brick.c === 'k' || brick.c === 'K') {
       if (false === this.filter && false === this.smoke && false === this.crush) {
         ps_ = ps_ + 1;
@@ -401,7 +404,7 @@ Breakout = {
     },
 
     measure: function(ctx) {
-      console.log('measure');
+      //console.log('measure');
       this.left   = this.game.court.left;
       this.top    = this.game.court.top - this.game.court.wall.size*2;
       this.width  = this.game.court.width;
@@ -580,9 +583,23 @@ Breakout = {
       brick.hit = true;
       this.numhits++;
       this.rerender = true;
-      console.log(brick.top+" "+brick.left);
-      $('brick').style.top = brick.top+'px';
-      $('brick').style.left = brick.left+'px';
+      
+      var brick__ = $('brick');
+      brick__.style.top = brick.top+'px';
+      brick__.style.left = brick.left+'px';
+
+      bricks_count++;
+      var grow_ = $('grow'+bricks_count);
+
+      if (brick.c === 'k' || brick.c === 'K') {
+        grow_.innerText = '';
+      } else {
+        grow_.innerText = '+ ' + brick.score;
+      }
+      grow_.style.top = brick.top-80+'px'
+      grow_.style.left = brick.left+40+'px'
+      grow_.addClassName('animate');
+
       brickCount = 0;
       animateBrick();
     },
@@ -838,7 +855,7 @@ Breakout = {
       var r = this.r;
 
       if (undefined === this.color) {
-        if (true === game.filter) {
+        if (true === game.filter || true === game.crush) {
           gradient.addColorStop(0, 'rgb(190,190,190)');
           gradient.addColorStop(0.3, 'rgb(140,140,140)');
           gradient.addColorStop(0.6, 'rgb(140,140,140)');
