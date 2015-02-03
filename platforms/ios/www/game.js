@@ -97,10 +97,17 @@ Element = function() {
   };
 
   var get = function(ele) {
-    if (typeof ele == 'string')
+    if (typeof ele == 'string') {
       ele = document.getElementById(ele);
-    if (!ele._extended)
-      Object.extend(ele, instance);
+    }
+    try {
+      if (!ele._extended) {
+        Object.extend(ele, instance);
+      }
+    } catch(err) {
+      alert(err);
+      window.location.reload();
+    }
     return ele;
   };
 

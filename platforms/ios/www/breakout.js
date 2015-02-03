@@ -25,8 +25,7 @@ Breakout = {
       radius:  0.7,
       speed:   25,
       labels: {
-        4: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
-        3: { text: 'ЦЕЛЬ 10000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
+        3: { text: 'ЦЕЛЬ 10 000 БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' },
         2: { text: '2', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' },
         1: { text: '1', fill: '#fff', stroke: '#fff', font: 'normal 34pt ds-digitalbold' }
       }
@@ -119,8 +118,8 @@ Breakout = {
     Game.addEvent('btn_speed',        'touchstart', this.restoreSpeed.bind(this));
     Game.addEvent('btn_smoke',        'click', this.restoreSmoke.bind(this));
     Game.addEvent('btn_smoke',        'touchstart', this.restoreSmoke.bind(this));
-    Game.addEvent('btn_smell',        'click', this.restoreSmell.bind(this));
-    Game.addEvent('btn_smell',        'touchstart', this.restoreSmell.bind(this));
+    Game.addEvent('btn_smell',        'click', this.restoreSmell.bind(this, false));
+    Game.addEvent('btn_smell',        'touchstart', this.restoreSmell.bind(this, false));
     Game.addEvent('refresh',          'click', this.restart.bind(this));
     Game.addEvent('refresh',          'touchstart', this.restart.bind(this));
 
@@ -183,38 +182,51 @@ Breakout = {
     this.smoke = false;
     this.crush = false;
 
-    this.paddle.w = 270;
+    for (var i = 1; i <= 41; i++) {
+      $('grow'+i).style.left = '-200px';
+      $('grow'+i).removeClassName('animate');
+    }
 
     $('btn_speed').hide();
     $('btn_smoke').hide();
     $('btn_smell').hide();
     $('gps_ring').hide();
-    $('clouds_1').removeClassName('active');
-    $('clouds_2').removeClassName('active');
-    $('clouds_3').removeClassName('active');
-    $('clouds_4').removeClassName('active');
-    $('clouds_5').removeClassName('active');
+    $('image_').hide();
+
+    $('counter').hide();
+    $('refresh').hide();
+    $('switcher').hide();
+    $('switcher2').hide();
+    $('crown').hide();
+
+    $('cl1').removeClassName('active');
+    $('cl2').removeClassName('active');
+    $('cl3').removeClassName('active');
+    $('cl4').removeClassName('active');
+    $('cl5').removeClassName('active');
 
     $('counter').innerText = 60;
     clearInterval(window.interval_);
     clearInterval(window.crint);
 
-    if (this.score.score > 10000 || this.win_) {
-      $('total-score').innerText = this.score.score;
+    if (this.score.score > result_ || this.win_) {
+      $('total-score-3').innerText = this.score.score;
       $('gameover_3').show();
       setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
     } else if (this.court.empty()) {
-      $('total-score').innerText = this.score.score;
+      $('total-score-3').innerText = this.score.score;
       $('gameover_3').show();
       setTimeout(function() { $('gameover_3').hide(); $('night').show(); }, 4000);    
     } else if (window.counter == 60) {
+      $('total-score-2').innerText = this.score.score;
       $('gameover_2').show();
       setTimeout(function() { $('gameover_2').hide(); $('night').show(); }, 4000);    
     } else {
+      $('total-score-1').innerText = this.score.score;
       $('gameover_1').show();
       setTimeout(function() { $('gameover_1').hide(); $('night').show(); }, 4000);    
     }    
-    setTimeout(function() { $('night').hide(); }, 10000);    
+    setTimeout(function() { /*$('night').hide(); $('start-screen').show();*/ window.location.reload(); }, 10000);    
     window.counter = 60;
     this.win_ = false;
   },
@@ -245,40 +257,52 @@ Breakout = {
   },
 
   hitBrick: function(brick) {
+    //window.console.log(brick.c);
+    //ps_ = getRandomInt(1,3);
     if (brick.c === 'k' || brick.c === 'K') {
       if (false === this.filter && false === this.smoke && false === this.crush) {
+        ps_ = ps_ + 1;
         switch (ps_) {
            case 1:
-              window.console.log('Filter');
+              //window.console.log('Filter');
               this.filter = true;
               break;
            case 2:
-              window.console.log('Smoke');
+              //window.console.log('Smoke');
               this.smoke = true;
-              $('clouds_1').addClassName('active');
-              setTimeout(function() { if (game.smoke) { $('clouds_2').addClassName('active'); }}, 1000);
-              setTimeout(function() { if (game.smoke) { $('clouds_3').addClassName('active'); }}, 2000);
-              setTimeout(function() { if (game.smoke) { $('clouds_4').addClassName('active'); }}, 3000);
-              setTimeout(function() { if (game.smoke) { $('clouds_5').addClassName('active'); }}, 4000);
+              $('cl1').addClassName('active');
+              setTimeout(function() { if (game.smoke) { $('cl2').addClassName('active'); }}, 500);
+              setTimeout(function() { if (game.smoke) { $('cl3').addClassName('active'); }}, 1000);
+              setTimeout(function() { if (game.smoke) { $('cl4').addClassName('active'); }}, 1500);
+              setTimeout(function() { if (game.smoke) { $('cl5').addClassName('active'); }}, 2000);
               $('btn_smoke').show();
               $('gps_ring').show();
               break;
+          /*
            case 3:
-              window.console.log('Crush');
               this.crush = true;
               $('btn_smell').show();
               $('gps_ring').show();
+              $('image_').show();
+              smokePos.style.left = game.paddle.x + game.paddle.w - 90 + 'px';
               crint = setInterval(function(){
-                if ( game.paddle.w > 30 ) {
+                if ( game.paddle.w > 90 ) {
                   game.paddle.w = game.paddle.w - 2;
                   game.paddle.rerender = true;
+                  var curPos = parseInt(smokePos.style.left);
+                  smokePos.style.left = (curPos - 2) + 'px';
                 } else {
+                  game.loseBall();
+                  game.restoreSmell(true);
                   clearInterval(crint);
                 }
               }, 100);
               break;
+            */
         }
-        if (ps_ < 3) { ps_++; } else { ps_ = 1; }
+        // -- remove 3rd property 
+        // if (ps_ == 3) { ps_ = 0; }
+        if (ps_ == 2) { ps_ = 0; }
         this.paddle.rerender = true;
         this.court.remove(brick);
       }
@@ -318,9 +342,9 @@ Breakout = {
   canNextLevel: function()      { return this.is('menu') && (this.level < (Breakout.Levels.length-1)); },
   prevLevel:    function(force) { if (force || this.canPrevLevel()) this.setLevel(this.level - 1);     },
   nextLevel:    function(force) { if (force || this.canNextLevel()) this.setLevel(this.level + 1);     },
-  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 450; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
-  restoreSmoke: function()      { this.smoke = false; $('btn_smoke').hide(); $('gps_ring').hide(); $('clouds_1').removeClassName('active'); $('clouds_2').removeClassName('active'); $('clouds_3').removeClassName('active'); $('clouds_4').removeClassName('active'); $('clouds_5').removeClassName('active'); },
-  restoreSmell: function()      { this.crush = false; $('btn_smell').hide(); $('gps_ring').hide(); clearInterval(crint); this.paddle.w = 270; this.paddle.rerender = true; },
+  restoreSpeed: function()      { this.filter = false; this.paddle.rerender = true; this.ball.speed = 650; this.ball.launchNow(); $('btn_speed').hide(); $('gps_ring').hide(); },
+  restoreSmoke: function()      { this.smoke = false; $('btn_smoke').hide(); $('gps_ring').hide(); $('cl1').removeClassName('active'); $('cl2').removeClassName('active'); $('cl3').removeClassName('active'); $('cl4').removeClassName('active'); $('cl5').removeClassName('active'); },
+  restoreSmell: function(force) { this.crush = false; $('btn_smell').hide(); $('gps_ring').hide(); $('image_').hide(); clearInterval(crint); this.paddle.w = 270; this.paddle.rerender = true; this.ball.speed = 650; if (!force) { this.ball.launchNow(); } else { this.ball.reset({launch: true}); } },
   restart:      function()      { this.lose(); },
 
   initCanvas: function(ctx) { // called by Game.Runner whenever the canvas is reset (on init and on resize)
@@ -379,6 +403,7 @@ Breakout = {
         this.game.paddle.w = 270; 
         $('btn_smell').hide(); 
         $('gps_ring').hide();
+        $('image_').hide();
       }
       this.game.filter = false; 
       this.game.smoke = false; 
@@ -388,7 +413,7 @@ Breakout = {
     },
  
     update: function(dt) {
-      //if (this.score > 10000) {
+      //if (this.score > result_) {
       //  this.game.lose();
       //}
       if (this.vscore < this.score) {
@@ -398,7 +423,7 @@ Breakout = {
     },
 
     measure: function(ctx) {
-      console.log('measure');
+      //console.log('measure');
       this.left   = this.game.court.left;
       this.top    = this.game.court.top - this.game.court.wall.size*2;
       this.width  = this.game.court.width;
@@ -577,9 +602,23 @@ Breakout = {
       brick.hit = true;
       this.numhits++;
       this.rerender = true;
-      console.log(brick.top+" "+brick.left);
-      $('brick').style.top = brick.top+'px';
-      $('brick').style.left = brick.left+'px';
+      
+      var brick__ = $('brick');
+      brick__.style.top = brick.top+'px';
+      brick__.style.left = brick.left+'px';
+
+      bricks_count++;
+      var grow_ = $('grow'+bricks_count);
+
+      if (brick.c === 'k' || brick.c === 'K') {
+        grow_.innerText = '';
+      } else {
+        grow_.innerText = '+ ' + brick.score;
+      }
+      grow_.style.top = brick.top-80+'px'
+      grow_.style.left = brick.left+40+'px'
+      grow_.addClassName('animate');
+
       brickCount = 0;
       animateBrick();
     },
@@ -636,8 +675,9 @@ Breakout = {
     },
 
     launch: function() {
+      $('start-screen').hide();
       if (!this.moving || this.countdown) {
-        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 4 : this.countdown - 1;
+        this.countdown = (typeof this.countdown == 'undefined') || (this.countdown == null) ? 3 : this.countdown - 1;
         if (this.countdown > 0) {
           this.label = this.launchLabel(this.countdown);
           this.delayTimer = setTimeout(this.launch.bind(this), 1000);
@@ -714,9 +754,11 @@ Breakout = {
           this.game.playSound('paddle');
           if (true === this.game.filter) {
             this.game.ball.speed = 0;
-            //this.game.ball.reset();
             $('btn_speed').show();
             $('gps_ring').show();
+          }
+          if (true === this.game.crush) {
+            this.game.ball.speed = 0;
           }
         }
 
@@ -789,8 +831,8 @@ Breakout = {
 
     reset: function() {
       this.speed  = this.cfg.speed  * this.game.court.chunk;
-      this.w      = 270; //this.cfg.width  * this.game.court.chunk;
-      this.h      = 30;  //this.cfg.height * this.game.court.chunk;
+      this.w      = 274; //this.cfg.width  * this.game.court.chunk;
+      this.h      = 65;  //this.cfg.height * this.game.court.chunk;
       this.r      = 5;
       this.minX   = this.game.court.left;
       this.maxX   = this.game.court.right - this.w;
@@ -812,6 +854,7 @@ Breakout = {
 
     place: function(x) {
       this.setpos(Math.min(this.maxX, Math.max(this.minX, x)), this.y);
+      smokePos.style.left = x + game.paddle.w - 90 + 'px';
     },
 
     update: function(dt) {
@@ -825,7 +868,11 @@ Breakout = {
         this.canvas = Game.renderToCanvas(this.w, this.h, this.render.bind(this));
         this.rerender = false;
       }
-      ctx.drawImage(this.canvas, this.x, this.y);
+      if (true === this.game.filter) {
+        ctx.drawImage(this.canvas, this.x, this.y - 25);  
+      } else {
+        ctx.drawImage(this.canvas, this.x, this.y);
+      }
     },
 
     render: function(ctx) {
@@ -834,34 +881,42 @@ Breakout = {
       var r = this.r;
 
       if (undefined === this.color) {
-        if (true === game.filter) {
+        if (true === game.filter || true === game.crush) {
+          /*
           gradient.addColorStop(0, 'rgb(190,190,190)');
           gradient.addColorStop(0.3, 'rgb(140,140,140)');
           gradient.addColorStop(0.6, 'rgb(140,140,140)');
           gradient.addColorStop(1, 'rgb(200,200,200)');
+          */
+          var imageObj = new Image();
+          imageObj.onload = function() {
+            ctx.drawImage(imageObj, r, 0);  
+          };
+          imageObj.src = 'images/filter_crashed.png';
+          
+
         } else {
           gradient.addColorStop(0, 'rgb(207,204,207)');
           gradient.addColorStop(0.2, 'rgb(191,188,186)');
           gradient.addColorStop(0.75, 'rgb(248,246,246)');
           gradient.addColorStop(1, 'rgb(255,254,254)');
-          
+        //}
+          ctx.fillStyle = gradient;
+          ctx.strokeStyle = this.game.color.border;
+          ctx.beginPath();
+          ctx.moveTo(r,  0);
+          ctx.lineTo(this.w - r, 0);
+          ctx.arcTo(this.w, 0, this.w, r, r);
+          ctx.lineTo(this.w, 32 - r);
+          ctx.arcTo(this.w, 32, this.w - r, 32, r);
+          ctx.lineTo(r, 32);
+          ctx.arcTo(0, 32, 0, 32 - r, r);
+          ctx.lineTo(0, r);
+          ctx.arcTo(0, 0, r, 0, r);
+          ctx.fill();
+          ctx.stroke();
+          ctx.closePath();
         }
-
-        ctx.fillStyle = gradient;
-        ctx.strokeStyle = this.game.color.border;
-        ctx.beginPath();
-        ctx.moveTo(r,  0);
-        ctx.lineTo(this.w - r, 0);
-        ctx.arcTo(this.w, 0, this.w, r, r);
-        ctx.lineTo(this.w, this.h - r);
-        ctx.arcTo(this.w, this.h, this.w - r, this.h, r);
-        ctx.lineTo(r, this.h);
-        ctx.arcTo(0, this.h, 0, this.h - r, r);
-        ctx.lineTo(0, r);
-        ctx.arcTo(0, 0, r, 0, r);
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
       } else {
         /*
         ctx.fillStyle = '#f5a330';

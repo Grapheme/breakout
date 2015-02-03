@@ -8,6 +8,12 @@
 </head> 
  
 <body> 
+<div id="preload">
+  <div id="cl1"> </div>
+  <div id="cl2"> </div>
+  <div id="cl3"> </div>
+  <div id="cl4"> </div>
+  <div id="cl5"> </div>
 
   <div id="counter">60</div>
   <div id="refresh">
@@ -15,17 +21,54 @@
   </div>
   <ul id="switcher">
     <li class="active">60 sec</li>
-    <!--
-    <li>80 sec</li>
-    -->
   </ul>
   <ul id="switcher2">
-    <li class="active">10000</li>
-    <!--
-    <li>7000</li>
-    <li>10000</li>
-    -->
+    <li class="active" id="target_score">10000</li>
   </ul>
+  <div id="crown"></div>
+  <div id="brick"></div>
+  <div id="grow1"></div>
+  <div id="grow2"></div>
+  <div id="grow3"></div>
+  <div id="grow4"></div>
+  <div id="grow5"></div>
+  <div id="grow6"></div>
+  <div id="grow7"></div>
+  <div id="grow8"></div>
+  <div id="grow9"></div>
+  <div id="grow10"></div>
+  <div id="grow11"></div>
+  <div id="grow12"></div>
+  <div id="grow13"></div>
+  <div id="grow14"></div>
+  <div id="grow15"></div>
+  <div id="grow16"></div>
+  <div id="grow17"></div>
+  <div id="grow18"></div>
+  <div id="grow19"></div>
+  <div id="grow20"></div>
+  <div id="grow21"></div>
+  <div id="grow22"></div>
+  <div id="grow23"></div>
+  <div id="grow24"></div>
+  <div id="grow25"></div>
+  <div id="grow26"></div>
+  <div id="grow27"></div>
+  <div id="grow28"></div>
+  <div id="grow29"></div>
+  <div id="grow30"></div>
+  <div id="grow31"></div>
+  <div id="grow32"></div>
+  <div id="grow33"></div>
+  <div id="grow34"></div>
+  <div id="grow35"></div>
+  <div id="grow36"></div>
+  <div id="grow37"></div>
+  <div id="grow38"></div>
+  <div id="grow39"></div>
+  <div id="grow40"></div>
+  <div id="grow41"></div>
+
   <a id="btn_speed" href="#">
     <img src="images/btn_speed.png" /> 
   </a>
@@ -36,13 +79,6 @@
     <img src="images/btn_smell.png" /> 
   </a>
   <div id="gps_ring"></div>
-  <div id="crown"></div>
-  <div id="clouds_1"></div>
-  <div id="clouds_2"></div>
-  <div id="clouds_3"></div>
-  <div id="clouds_4"></div>
-  <div id="clouds_5"></div>
-  <div id="brick"></div>
 
   <div id="breakout">
     <canvas id="canvas">
@@ -77,29 +113,75 @@
     </div>
   </div>
 
+  <div id="start-screen">
+    <h1>Crown Ball</h1>
+    <div class="clearfix">
+      <div class="left">
+        <p class="title">Выбивай блоки, получай баллы</p>
+        <p>
+          <img src="images/brick_normal.png" alt="Normal block" /> от 95 до 115 баллов &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+        <p>
+          <img src="images/brick_good.png" alt="Normal block" /> 1350 баллов за «корону»
+        </p>
+        <p class="title">Количество баллов</p>
+        <p class="radio">
+          <input type="radio" name="group1" value="5000" onclick=" updateTarget(5000);"> 5000 баллов
+        </p>
+        <p class="radio">
+          <input type="radio" name="group1" value="10000" checked onclick="updateTarget(10000);"> 10 000 баллов
+        </p>
+        <p class="radio">
+          <input type="radio" name="group1" value="15000" onclick="updateTarget(12000);"> 12 000 баллов
+        </p>
+      </div>
+      <div class="right">
+        <p class="title">Избегай серых блоков</p>
+        <p>
+          <img style="background-color: #718a98;" src="images/brick_bad.png" alt="Normal block" /> &ndash; одна из ловушек в игре &nbsp;&nbsp;
+        </p>
+        <p>
+          <img class="btn__" width="90px" src="images/btn_speed.png" alt="Button 1"> &ndash; верни платформе плотность<br/>
+        </p>
+        <p>
+          <img class="btn__" width="90px" src="images/btn_smoke.png" alt="Button 1"> &ndash; избавься от дыма<br/>
+        </p>
+        <!--
+        <p>
+          <img class="btn__" width="90px" src="images/btn_smell.png" alt="Button 1"> &ndash; останови уменьшение платформы<br/>
+        </p>
+        -->
+      </div>
+    </div>
+  </div>
   <div id="gameover_1">
     Игра окончена. Попробуй позже. <br/>
+    Ты набрал <span id="total-score-1">0</span> очков<br/>
     <img src="images/crownL.png" alt="" />
   </div>
   <div id="gameover_2">
     Время истекло. Попробуй позже. <br/>
+    Ты набрал <span id="total-score-2">0</span> очков<br/>
     <img src="images/crownL.png" alt="" />
   </div>
   <div id="gameover_3">
     У тебя отлично получилось! <br/>
-    Ты набрал <span id="total-score">0</span> очков<br/>
+    Ты набрал <span id="total-score-3">0</span> очков<br/>
     <img src="images/crownL.png" alt="" />
   </div>
   <div id="night">
     <img src="images/night.png" alt="" /> <br/>
     Твоя коронная ночь! 
   </div>
+  <img id="image_" src="images/smoke_png.png">
   <script>
   var game,
       interval_,
-      crint;
-  var counter = 60;
-  var brickInt, brickCount = 0, ps_ = 1;
+      smokePos,
+      crint, 
+      result_ = 10000;
+  var counter = 60, bricks_count = 0;
+  var brickInt, brickCount = 0, ps_ = 0;
 
   function ballInterval() {
     if (counter > 0) {
@@ -136,6 +218,13 @@
       if (brickCount > 5) { $('brick').style.backgroundPosition = "-734px -78px"; }
       if (brickCount > 6) { clearInterval(brickInt); $('brick').hide(); }
     }, 50);
+    console.log('animate: ' + (new Date().getTime()));
+  }
+
+  function updateTarget(score) {
+    window.result_ = score;
+    game.cfg.ball.labels['3'] = { text: 'ЦЕЛЬ '+score+' БАЛЛОВ', fill: '#fff', stroke: '#fff', font: 'normal 34pt UnicumCondLight' };
+    $('target_score').innerText = score;
   }
   </script>  
   <script src="game.js"></script>
@@ -153,9 +242,11 @@
     $('gameover_2').hide();
     $('gameover_3').hide();
     $('night').hide();
+    $('image_').hide();
   });
   setTimeout(function() { game.setLevel(5); }, 50);      
+  setTimeout(function() { $('preload').style.opacity = 1; smokePos = $('image_'); }, 1000); 
   </script>
-
+</div>
 </body> 
 </html>

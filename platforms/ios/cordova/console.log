@@ -1,0 +1,26 @@
+2014-12-08 19:22:17.334 Crown Ball[74423:1432214] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/andrewgs/Library/Developer/CoreSimulator/Devices/7A3D4825-FDF2-45AD-A667-7A80BF5E4EC9/data/Containers/Data/Application/7E2FB50C-514E-4FAD-9043-A2EC63986509/Library/Cookies/Cookies.binarycookies
+2014-12-08 19:22:17.391 Crown Ball[74423:1432214] Apache Cordova native platform version 3.6.3 is starting.
+2014-12-08 19:22:17.392 Crown Ball[74423:1432214] Multi-tasking -> Device: YES, App: YES
+2014-12-08 19:22:17.443 Crown Ball[74423:1432214] Unlimited access to network resources
+2014-12-08 19:22:17.489 Crown Ball[74423:1432214] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+
+2014-12-08 19:22:19.947 Crown Ball[74423:1432214] Resetting plugins due to page load.
+2014-12-08 19:22:21.038 Crown Ball[74423:1432214] Finished load of: file:///Users/andrewgs/Library/Developer/CoreSimulator/Devices/7A3D4825-FDF2-45AD-A667-7A80BF5E4EC9/data/Containers/Bundle/Application/E6118D39-5B9B-4853-B4C0-5AD096E21EDA/Crown%20Ball.app/www/index.html
+2014-12-10 10:24:17.948 Crown Ball[692:1886471] DiskCookieStorage changing policy from 2 to 0, cookie file: file:///Users/andrewgs/Library/Developer/CoreSimulator/Devices/7A3D4825-FDF2-45AD-A667-7A80BF5E4EC9/data/Containers/Data/Application/6F69BE12-0F47-465F-A766-BC57DEB60BE5/Library/Cookies/Cookies.binarycookies
+2014-12-10 10:24:17.973 Crown Ball[692:1886471] Apache Cordova native platform version 3.6.3 is starting.
+2014-12-10 10:24:17.974 Crown Ball[692:1886471] Multi-tasking -> Device: YES, App: YES
+2014-12-10 10:24:17.998 Crown Ball[692:1886471] Unlimited access to network resources
+2014-12-10 10:24:18.004 Crown Ball[692:1886471] 
+
+Started backup to iCloud! Please be careful.
+Your application might be rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines" at:
+https://developer.apple.com/icloud/documentation/data-storage/
+
+2014-12-10 10:24:18.673 Crown Ball[692:1886471] Resetting plugins due to page load.
+2014-12-10 10:24:19.126 Crown Ball[692:1886471] Finished load of: file:///Users/andrewgs/Library/Developer/CoreSimulator/Devices/7A3D4825-FDF2-45AD-A667-7A80BF5E4EC9/data/Containers/Bundle/Application/031E5398-6F27-41BC-9714-7C41E820B5FD/Crown%20Ball.app/www/index.html
